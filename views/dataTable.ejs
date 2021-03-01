@@ -5,26 +5,35 @@
 
 <!DOCTYPE html>
 <html>
+    <head>
+        <style type="text/css">
+            table, th, td {
+                border: 1px solid black;
+            }
+            td {
+                padding: 5px;
+            }
+        </style>
+    </head>
     <body>
         <h1>Showing results for: <%= items[0].country %>.</h1>
 
         <table>
             <tr>
-                <td>Date</td>
-                <td><%= items[0].date %></td>
+                <th>   Date   </th>
+                <th>   Total Confirmed Cases   </th>
+                <th>   Total Deaths   </th>
+                <th>   Total Recovered   </th>
             </tr>
-            <tr>
-                <td>Total Confirmed Cases</td>
-                <td><%= items[0].confirmed %></td>
+            <% var i
+               for (i = 0; i < items.length; i++) { %>
+            <tr>        
+                <td>   <%= items[i].date %>   </td>             
+                <td>   <%= items[i].confirmed %>   </td>
+                <td>   <%= items[i].deaths %>   </td>
+                <td>   <%= items[i].recovered %>   </td>
             </tr>
-            <tr>
-                <td>Total Deaths</td>
-                <td><%= items[0].deaths %></td>
-            </tr>
-            <tr>
-                <td>Total Recovered</td>
-                <td><%= items[0].recovered %></td>
-            </tr>
+            <% } %>
         </table>
     </body>
 </html>

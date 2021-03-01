@@ -36,7 +36,7 @@ app.use('/get-data', (req, res) => {
                          .collection('global_and_us')
                          .find({ country: 'Germany' })
                          .sort(["date", -1])
-                         .limit(5);
+                         .limit(15);
 
         // push the data objects into the results array
         data.forEach((doc, err) => {
