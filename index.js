@@ -68,8 +68,13 @@ app.use('/get-data', (req, res) => {
     });
 });
 
-//exact same as above but gives page to test and work with d3
+//simple d3 graph with hardcoded data
 app.use('/graph', (req, res) => {
+    res.render('d3testj');
+});
+
+//simple c3 graph with hardcoded data from the items array
+app.use('/graph2', (req, res) => {
     var resultArray = [];
 
     client.connect((err) => {
@@ -82,7 +87,7 @@ app.use('/graph', (req, res) => {
         resultArray.push(doc);
       }, () => {
         client.close();
-        res.render('d3testj', {items: resultArray});
+        res.render('c3test', {items: resultArray});
 
       });
     });
