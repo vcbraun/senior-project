@@ -49,6 +49,26 @@ app.use('/get-data', (req, res) => {
     });
 });
 
+//exact same as above but gives page to test and work with d3
+app.use('/graph', (req, res) => {
+    var resultArray = [];
+
+    client.connect((err) => {
+      var data = client.db('covid19')
+                        .collection('global_and_us')
+                        .find({country: 'Germany' })
+                        .sort(["date", -1])
+                        .limit(15);
+      data.forEach((doc, err) => {
+        resultArray.push(doc);
+      }, () => {
+        client.close();
+        res.render('d3testj', {items: resultArray});
+
+      });
+    });
+});
+
 // home page
 app.use('/', (req, res) => {
     res.send('Try going to /get-data!');
