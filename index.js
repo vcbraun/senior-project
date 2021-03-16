@@ -27,46 +27,34 @@ const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
+  // ---------------------- Load Data into usData -----------------------------
+  var usData = [];
+
+  // connect to the mongo client
+  client.connect((err) => {
+    // extract data
+    var data = client.db('covid19')
+                     .collection('global_and_us')
+                     .find()
+                     .sort(["date", -1])
+                     .limit(100);
+
+    // push the data objects into the results array
+    data.forEach((doc, err) => {
+        usData.push(doc);
+    }, () => {
+        client.close();
+    });
+});
+// usage example: usData[0].country will always return "US".
+// ---------------------- Finish Loading Data ---------------------------------
 
 // get-data requests render a webpage with data from the database
 app.use('/get-data', (req, res) => {
-    var resultArray = [];
-
-    //get user input
-    var countrySel = req.body.countries;
-
-    // connect to the mongo client
-    client.connect((err) => {
-
-        ////getting array of countries
-        // client.db('covid19')
-        //       .collection('metadata')
-        //       .find()
-        //       .toArray((err, docs) => {
-        //         if (err) {
-        //           console.error(err);
-        //         }
-        //         const countrylist = docs[0].countries;
-        //         console.log(util.inspect(countrylist, { maxArrayLength: null }));
-        //       });
-
-        // extract data
-        var data = client.db('covid19')
-                         .collection('global_and_us')
-                         .find({ country: countrySel })
-                         .sort(["date", -1])
-                         .limit(15);
-
-        // push the data objects into the results array
-        data.forEach((doc, err) => {
-            resultArray.push(doc);
-        }, () => {
-            client.close();
-            // render the data view
-            res.render('dataTable', {items: resultArray});
-        });
-    });
+    // render the data view
+    res.render('dataTable', {items: usData});
 });
+    
 
 //simple d3 graph with hardcoded data
 app.use('/graph', (req, res) => {
@@ -77,20 +65,8 @@ app.use('/graph', (req, res) => {
 app.use('/graph2', (req, res) => {
     var resultArray = [];
 
-    client.connect((err) => {
-      var data = client.db('covid19')
-                        .collection('global_and_us')
-                        .find({country: 'Germany' })
-                        .sort(["date", -1])
-                        .limit(15);
-      data.forEach((doc, err) => {
-        resultArray.push(doc);
-      }, () => {
-        client.close();
-        res.render('c3test', {items: resultArray});
+        res.render('c3test', {items: usData});
 
-      });
-    });
 });
 
 //home page
