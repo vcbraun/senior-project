@@ -40,7 +40,11 @@ const client = new MongoClient(uri, {
 
     // push the data objects into the results array
     data.forEach((doc, err) => {
-        usData.push(doc);
+        if (doc.county != "Unassigned")
+        {
+          usData.push(doc);
+        }
+        
     }, () => {
         client.close();
     });
