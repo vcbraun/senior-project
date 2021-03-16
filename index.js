@@ -42,10 +42,12 @@ const client = new MongoClient(uri, {
     // push the data objects into the results array
     data.forEach((doc, err) => {
         usData.push(doc);
+        console.log(doc);
     }, () => {
         client.close();
     });
 });
+
 // ---------------------- Finish Loading Data ---------------------------------
 
 // get-data requests render a webpage with data from the database
@@ -53,7 +55,10 @@ app.use('/get-data', (req, res) => {
     // render the data view
     res.render('dataTable', {items: usData});
 });
-    
+
+app.use('/choropleth', (req, res) => {
+  res.render('choropleth', {items: usData});
+});
 
 //simple d3 graph with hardcoded data
 app.use('/graph', (req, res) => {
