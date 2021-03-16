@@ -34,7 +34,7 @@ const client = new MongoClient(uri, {
   client.connect((err) => {
     // extract data
     var data = client.db('covid19')
-                     .collection('global_and_us')
+                     .collection('us_only')
                      .find()
                      .sort(["date", -1])
                      .limit(100);
