@@ -37,7 +37,6 @@ const client = new MongoClient(uri, {
                      .collection('us_only')
                      .find()
                      .sort(["date", -1])
-                     .limit(100);
 
     // push the data objects into the results array
     data.forEach((doc, err) => {

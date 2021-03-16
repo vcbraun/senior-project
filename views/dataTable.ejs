@@ -20,18 +20,20 @@
 
         <table>
             <tr>
+                <th>   State    </th>
+                <th>   County   </th>
                 <th>   Date   </th>
-                <th>   Total Confirmed Cases   </th>
-                <th>   Total Deaths   </th>
-                <th>   Total Recovered   </th>
+                <th>   Confirmed Cases   </th>
+                <th>   Deaths   </th>
             </tr>
             <% var i
-               for (i = 0; i < items.length; i++) { %>
-            <tr>        
+               for (i = 0; i < 500; i++) { %>
+            <tr>  
+                <td>   <%= items[i].state %>   </td> 
+                <td>   <%= items[i].county %>   </td>       
                 <td>   <%= items[i].date %>   </td>             
                 <td>   <%= items[i].confirmed %>   </td>
                 <td>   <%= items[i].deaths %>   </td>
-                <td>   <%= items[i].recovered %>   </td>
             </tr>
             <% } %>
         </table>
