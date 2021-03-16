@@ -46,7 +46,6 @@ const client = new MongoClient(uri, {
         client.close();
     });
 });
-// usage example: usData[0].country will always return "US".
 // ---------------------- Finish Loading Data ---------------------------------
 
 // get-data requests render a webpage with data from the database
