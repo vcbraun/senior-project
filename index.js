@@ -29,6 +29,7 @@ const client = new MongoClient(uri, {
   });
   // ---------------------- Load Data into usData -----------------------------
   var usData = [];
+  var countyData = {};
 
   // connect to the mongo client
   client.connect((err) => {
@@ -36,13 +37,17 @@ const client = new MongoClient(uri, {
     var data = client.db('covid19')
                      .collection('us_only')
                      .find()
-                     .sort(["date", -1])
-                     .limit(100);
+                     .sort(["date", -1]);
 
     // push the data objects into the results array
     data.forEach((doc, err) => {
         usData.push(doc);
-        console.log(doc);
+
+        if (!(doc.fips in countyData))
+        {
+          countyData[doc.fips] = 100 * doc.confirmed / doc.population;
+        }
+
     }, () => {
         client.close();
     });
@@ -57,7 +62,7 @@ app.use('/get-data', (req, res) => {
 });
 
 app.use('/choropleth', (req, res) => {
-  res.render('choropleth', {items: usData});
+  res.render('choropleth', {items: countyData});
 });
 
 //simple d3 graph with hardcoded data
@@ -75,6 +80,8 @@ app.use('/graph2', (req, res) => {
 
 //home page
 app.use('/', express.static(path.join(__dirname, 'public')))
+
+app.use(express.static(path.join(__dirname, 'public')))
 
 // listen for requests
 app.listen(port, () => {

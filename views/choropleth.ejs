@@ -10,52 +10,22 @@
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 
+    <!-- topojson support -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js" integrity="sha512-4UKI/XKm3xrvJ6pZS5oTRvIQGIzZFoXR71rRBb1y2N+PbwAsKa5tPl2J6WvbEvwN3TxQCm8hMzsl/pO+82iRlg==" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/choropleth.css" />    
 </head>
 
 <body>
-    <svg id='canvas' width="400" height="400">
+    <h2 id='title'>Confirmed Covid Cases per County</h2>
+    <h4> Numbers normalized based on population. Darker = More Cases</h4>
+    <svg id='canvas'>
     </svg>
 
 </body>
-
 <script>
-    var svg = d3.select("#canvas"),
-        width = +svg.attr("width"),
-        height = +svg.attr("height");
+    var countyCovidData = <%- JSON.stringify(items); %>
 
-    var path = d3.geoPath();
-    var projection = d3.geoMercator()
-        .scale(70)
-        .center([0, 20])
-        .translate([width / 2, height / 2]);
-
-    var data = d3.map();
-    var colorScale = d3.scaleThreshold()
-        .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
-        .range(d3.schemeBlues[7]);
-
-    // external data
-    d3.queue()
-        .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
-        .defer(d3.csv, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv")
-        .await(ready);
-
-    function ready(error, topo) {
-        // draw map
-        svg.append("g")
-            .selectAll("path")
-            .data(topo.features)
-            .enter()
-            .append("path")
-            // draw countries
-            .attr("d", d3.geoPath()
-                .projection(projection))
-            // set colors
-            .attr("fill", function (d) {
-                d.total = data.get(d.id) || 0;
-                return colorScale(d.total);
-            });
-    }
 </script>
-
+<script defer src="/scripts//choropleth.js"></script>
 </html>
