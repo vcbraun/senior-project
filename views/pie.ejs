@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+<!-- Color scale -->
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+</head>
+<body>
+  <script>
+  //Initializing an accessible dictionary
+  var dataCopy = <%- JSON.stringify(dict); %>
+  //getting keys of the dictionary (i.e.- dates)
+  var dkey = Object.keys(dataCopy);
+  //grabbing the first and last dates available in the dataset
+  var date1 = dkey[0];
+  var date2 = dkey[dkey.length -1];
+  //grabbing the data of that day
+  var data1 = dataCopy[date1];
+  var data2 = dataCopy[date2];
+  //setting the label of the buttons using the dict keys
+  window.onload = function(){
+    document.getElementById('b1').innerHTML = date1;
+    document.getElementById('b2').innerHTML = date2;
+    };
+  </script>
+<!-- Add 2 buttons for switching between different dates -->
+<div id="one"><button onclick="update(data1)" class="button" id="b1"></button></div>
+<div id="two"><button onclick="update(data2)" class="button" id="b2"></button></div>
+
+<!-- Create a div where the graph will be -->
+<div id="chart"></div>
+
+<script>
+// setting dimensions and margins for the graph
+var width = 500
+    height = 500
+    margin = 40
+
+
+// The radius of the pieplot is computed
+var radius = Math.min(width, height) / 2 - margin
+
+// append the svg object to the div called 'chart'
+var svg = d3.select("#chart")
+  .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+// set the color scale
+var color = d3.scaleOrdinal()
+  .domain(["Alabama","Alaska","American Samoa","Arizona","Arkansas",
+  "California","Colorado","Connecticut","Delaware","Diamond Princess","District of Columbia",
+  "Florida","Georgia","Grand Princess","Guam","Hawaii","Idaho","Illinois","Indiana","Iowa",
+  "Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi",
+  "Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina",
+  "North Dakota","Northern Mariana Islands","Ohio","Oklahoma","Oregon","Pennsylvania","Puerto Rico",
+  "Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virgin Islands",
+  "Virginia","Washington","West Virginia","Wisconsin","Wyoming"])
+  .range(d3.schemeCategory20);
+
+// A function that create / update the plot for a given date variable:
+function update(data) {
+  // Compute the positioning of each state on the pie:
+  var pie = d3.pie()
+    .value(function(d) {return d.value; })
+    .sort(function(a, b) { console.log(a) ; return d3.ascending(a.key, b.key);} ) // This make sure that group order remains the same in the pie chart
+  var data_ready = pie(d3.entries(data))
+
+  // mapping to data
+  var path = svg.selectAll("path")
+    .data(data_ready)
+
+  // Building the pie chart with arc function
+  path
+    .enter()
+    .append('path')
+    .merge(path)
+    .transition()
+    .duration(1000)
+    .attr('d', d3.arc()
+      .innerRadius(0)
+      .outerRadius(radius)
+    )
+    .attr('fill', function(d){ return(color(d.data.key)) })
+    .attr("stroke", "white")
+    .style("stroke-width", "2px")
+    .style("opacity", 1)
+  // remove the group that is not present anymore
+  path
+    .exit()
+    .remove()
+
+}
+
+// Initialize the plot with the first dataset
+update(data1)
+
+</script>
+
+</body>
+</html>

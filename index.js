@@ -29,6 +29,8 @@ const client = new MongoClient(uri, {
   });
   // ---------------------- Load Data into usData -----------------------------
   var usData = [];
+  var countyData = {};
+  var stateCon = {};
 
   // connect to the mongo client
   client.connect((err) => {
@@ -36,19 +38,22 @@ const client = new MongoClient(uri, {
     var data = client.db('covid19')
                      .collection('us_only')
                      .find()
-                     .sort(["date", -1])
+                     .sort(["date", -1]);
 
     // push the data objects into the results array
     data.forEach((doc, err) => {
-        if (doc.county != "Unassigned")
+        usData.push(doc);
+
+        if (!(doc.fips in countyData))
         {
-          usData.push(doc);
+          countyData[doc.fips] = 100 * doc.confirmed / doc.population;
         }
-        
+
     }, () => {
         client.close();
     });
 });
+
 // ---------------------- Finish Loading Data ---------------------------------
 
 // get-data requests render a webpage with data from the database
@@ -56,11 +61,48 @@ app.use('/get-data', (req, res) => {
     // render the data view
     res.render('dataTable', {items: usData});
 });
-    
+
+app.use('/choropleth', (req, res) => {
+  res.render('choropleth', {items: countyData});
+});
 
 //simple d3 graph with hardcoded data
 app.use('/graph', (req, res) => {
     res.render('d3testj');
+});
+
+//piechart attempt -- tanjuma will pull out stateCon later
+app.use('/piechart', (req, res) => {
+  //populating stateCon dictionary from usData
+  //the purpose is to sum up all the counties data for each state on a day
+  for(i = 0; i < usData.length; i++){
+    var date = usData[i].date;
+    var stateN = (usData[i].state);
+    var confirmed = usData[i].confirmed;
+    if(date in stateCon){
+      var statesL = stateCon[date];
+      if(stateN in statesL){
+        var num = statesL[stateN];
+        (stateCon[date])[stateN] = (num+confirmed);
+      }
+      else{
+        (stateCon[date])[stateN] = confirmed;
+      }
+    }
+    else{
+      stateCon[date] = {};
+      (stateCon[date])[stateN] = confirmed;
+    }
+  }
+  // var keyz = Object.keys(stateCon);
+  // var printdate1 = keyz[0];
+  // var printdate2 = keyz[keyz.length - 1];
+  // var val1 = stateCon[printdate1];
+  // var val2 = stateCon[printdate2];
+  // console.log(val1);
+  // console.log(val2);
+  // console.log(keyz);
+  res.render('pie', {dict: stateCon});
 });
 
 //simple c3 graph with hardcoded data from the items array
@@ -73,6 +115,8 @@ app.use('/graph2', (req, res) => {
 
 //home page
 app.use('/', express.static(path.join(__dirname, 'public')))
+
+app.use(express.static(path.join(__dirname, 'public')))
 
 // listen for requests
 app.listen(port, () => {
