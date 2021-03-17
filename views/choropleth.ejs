@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Choropleth Map</title>
+
+    <!-- d3.js libraries -->
+    <script src="https://d3js.org/d3.v5.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+
+    <!-- topojson support -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js" integrity="sha512-4UKI/XKm3xrvJ6pZS5oTRvIQGIzZFoXR71rRBb1y2N+PbwAsKa5tPl2J6WvbEvwN3TxQCm8hMzsl/pO+82iRlg==" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/choropleth.css" />    
+</head>
+
+<body>
+    <h2 id='title'>Confirmed Covid Cases per County</h2>
+    <h4> Numbers normalized based on population. Darker = More Cases</h4>
+    <svg id='canvas'>
+    </svg>
+
+</body>
+<script>
+    var countyCovidData = <%- JSON.stringify(items); %>
+
+</script>
+<script defer src="/scripts//choropleth.js"></script>
+</html>
