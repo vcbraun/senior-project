@@ -105,6 +105,31 @@ app.use('/piechart', (req, res) => {
   res.render('pie', {dict: stateCon});
 });
 
+app.use('/line', (req, res) => {
+  //in my code this section had been in the original section of loading data. it may be fully possible to just add the for each loop up above and have it work fine
+  //i didn't want to mess with it just yet and mess up the choropleth though
+    var data = client.db('covid19')
+                   .collection('us_only')
+                   .find()
+                   .sort(["date", -1])
+
+  // push the data objects into the results array
+  var dateconfirm = {};
+  data.forEach((doc, err) => {
+      usData.push(doc);
+      if (doc.date in dateconfirm == true){
+        dateconfirm[doc.date] = dateconfirm[doc.date] + doc.confirmed;
+      }
+      else{
+        dateconfirm[doc.date] = doc.confirmed;
+      }
+
+  }, () => {
+      client.close();
+  });
+  res.render('line', {items: dateconfirm});
+});
+
 //simple c3 graph with hardcoded data from the items array
 app.use('/graph2', (req, res) => {
     var resultArray = [];
