@@ -130,7 +130,7 @@ app.use('/line', (req, res) => {
   }, () => {
       client.close();
   });
-  res.render('line', {itemsc: dateconfirm}, {itemsd: datedeath});
+  res.render('line', {itemsc: dateconfirm}); //this will eventually take confirmed and death somehow when i find the best way to combine but for the sake of running it i just included the confirms
 });
 
 //simple c3 graph with hardcoded data from the items array
