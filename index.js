@@ -115,19 +115,22 @@ app.use('/line', (req, res) => {
 
   // push the data objects into the results array
   var dateconfirm = {};
+  var datedeath = {};
   data.forEach((doc, err) => {
       usData.push(doc);
       if (doc.date in dateconfirm == true){
         dateconfirm[doc.date] = dateconfirm[doc.date] + doc.confirmed;
+        datedeath[doc.date] = datedeath[doc.date] + doc.deaths;
       }
       else{
         dateconfirm[doc.date] = doc.confirmed;
+        datedeath[doc.date] = doc.death;
       }
 
   }, () => {
       client.close();
   });
-  res.render('line', {items: dateconfirm});
+  res.render('line', {itemsc: dateconfirm}, {itemsd: datedeath});
 });
 
 //simple c3 graph with hardcoded data from the items array
