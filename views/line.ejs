@@ -26,7 +26,7 @@ var svg = d3.select("#my_dataviz")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
-  var data = <%- JSON.stringify(items); %>;
+  var data = <%- JSON.stringify(itemsc); %>;
 
   var parseDate = d3.isoParse;
 
