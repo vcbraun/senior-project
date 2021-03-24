@@ -6,8 +6,10 @@
 <script src="https://d3js.org/d3.v4.js"></script>
 <!-- Color scale -->
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/navbar.css" />
 </head>
 <body>
+  <%- include('partials/navbar') %>
   <script>
   //Initializing an accessible dictionary
   var dataCopy = <%- JSON.stringify(dict); %>
