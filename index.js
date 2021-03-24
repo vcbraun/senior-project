@@ -40,15 +40,11 @@ const client = new MongoClient(uri, {
     var data = client.db('covid19')
                      .collection('us_only')
                      .find()
-                     .sort(["date", -1])
-                     .limit(200);
+                     .sort(["date", -1]);
 
     // push the data objects into the results array
-    data.forEach((doc, err) => {
-        
+    data.forEach((doc, err) => {     
         usData.push(doc);
-
-        console.log(doc);
 
         if (!(doc.fips in countyData))
         {
