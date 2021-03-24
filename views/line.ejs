@@ -27,14 +27,8 @@ var parseDate = d3.isoParse;
   //data[val] = parseDate(data[val]);
 //}
 
-function getdates(data){
-  for (const thedate in data) {
-    return data[thedate];
-  }
-}
 
 const maxdate = parseDate(thedates[0]);
-console.log(maxdate);
 var confirmnums = [];
 var i;
 for(i = 0; i < thedates.length; i++){
@@ -94,7 +88,7 @@ svg.append("g")
 
      // Create a update selection: bind to the new data
       var u = svg.selectAll(".lineTest")
-        .data([data], function(d){ return d.key });
+        .data([data], function(d){ return parseDate(d.key) });
 
       // Updata the line
       u
@@ -105,7 +99,7 @@ svg.append("g")
         .transition()
         .duration(3000)
         .attr("d", d3.line()
-          .x(function(d) { return x(d.key); })
+          .x(function(d) { return x(parseDate(d.key)); })
           .y(function(d) { return y(d.value); }))
           .attr("fill", "none")
           .attr("stroke", "steelblue")
@@ -116,4 +110,3 @@ svg.append("g")
 update(data)
 
 </script>
-
