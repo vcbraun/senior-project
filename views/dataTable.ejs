@@ -25,6 +25,7 @@
                 <th>   Date   </th>
                 <th>   Confirmed Cases   </th>
                 <th>   Deaths   </th>
+                <th>   Population </th>
             </tr>
             <% var i
                for (i = 0; i < 500; i++) { %>
@@ -34,6 +35,7 @@
                 <td>   <%= items[i].date.toDateString() %>   </td>             
                 <td>   <%= items[i].confirmed %>   </td>
                 <td>   <%= items[i].deaths %>   </td>
+                <td>   <%= items[i].population %></td>
             </tr>
             <% } %>
         </table>

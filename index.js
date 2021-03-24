@@ -31,6 +31,8 @@ const client = new MongoClient(uri, {
   var usData = [];
   var countyData = {};
   var stateCon = {};
+  var stateDeath = {};
+  var statePop = {};
 
   // connect to the mongo client
   client.connect((err) => {
@@ -38,34 +40,57 @@ const client = new MongoClient(uri, {
     var data = client.db('covid19')
                      .collection('us_only')
                      .find()
-                     .sort(["date", -1]);
+                     .sort(["date", -1])
+                     .limit(200);
 
     // push the data objects into the results array
     data.forEach((doc, err) => {
+        
         usData.push(doc);
+
+        console.log(doc);
 
         if (!(doc.fips in countyData))
         {
           countyData[doc.fips] = 100 * doc.confirmed / doc.population;
         }
 
-        
           var date = doc.date;
           var stateN = doc.state;
           var confirmed = doc.confirmed;
+          var death = doc.death;
+          var pop = doc.population;
+
           if(date in stateCon){
             var statesL = stateCon[date];
             if(stateN in statesL){
-              var num = statesL[stateN];
-              (stateCon[date])[stateN] = (num+confirmed);
+              var numConfirmed = statesL[stateN];
+              var numDeath = stateDeath[date][stateN];
+              var numPop = statePop[date][stateN];
+
+              stateCon[date][stateN] = numConfirmed + confirmed;
+              stateDeath[date][stateN] = numDeath + death;
+
+              if (pop != null)
+                statePop[date][stateN] = numPop + pop;
             }
             else{
-              (stateCon[date])[stateN] = confirmed;
+              stateCon[date][stateN] = confirmed;
+              stateDeath[date][stateN] = death;
+
+              if (pop != null)
+                statePop[date][stateN] = pop;
             }
           }
           else{
             stateCon[date] = {};
-            (stateCon[date])[stateN] = confirmed;
+            stateDeath[date] = {};
+            statePop[date] = {};
+
+            stateCon[date][stateN] = confirmed;
+            stateDeath[date][stateN] = death;
+            if (pop != null)
+              statePop[date][stateN] = pop;
           }
         
 
@@ -83,7 +108,9 @@ app.use('/get-data', (req, res) => {
 });
 
 app.use('/choropleth', (req, res) => {
-  res.render('choropleth', {items: countyData});
+  res.render('choropleth', {counties: countyData,
+                            pop: statePop['Mon Mar 22 2021 20:00:00 GMT-0400 (Eastern Daylight Time)'],
+                            stateConfirmed: stateCon['Mon Mar 22 2021 20:00:00 GMT-0400 (Eastern Daylight Time)']});
 });
 
 //simple d3 graph with hardcoded data
@@ -93,10 +120,6 @@ app.use('/graph', (req, res) => {
 
 //piechart attempt -- tanjuma will pull out stateCon later
 app.use('/piechart', (req, res) => {
-  //populating stateCon dictionary from usData
-  //the purpose is to sum up all the counties data for each state on a day
-  
-
   res.render('pie', {dict: stateCon});
 });
 
