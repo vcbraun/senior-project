@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/css/navbar.css" />
+        <link rel="stylesheet" type="text/css" href="/css/index.css" />
+    </head>
+    <body>
+        <%- include('partials/navbar') %>
+        <div class="container">
+            <h1>Welcome!</h1>
+            <h2>Choose a visualization you want to look at:</h2>
+            <div id="pageLinks">
+                <ul id="pagelinks">
+                    <li><a href="/choropleth">Choropleth</a></li>
+                    <li><a href="/line">Line Graph</a></li>
+                    <li><a href="/piechart">Piechart</a></li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

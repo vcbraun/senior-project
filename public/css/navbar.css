@@ -1,0 +1,33 @@
+* {
+    margin:  0;
+    padding: 0;
+}
+body, html {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+nav {
+    background-color: #333;
+    margin: 0px !important;
+    width: 100vw;
+}
+
+nav ul {
+    list-style-type: none;
+}
+
+nav ul li {
+    display: inline-block;
+    padding: 15px 10px;
+    margin: 0 8px;
+}
+
+nav ul li:hover {
+    background-color: #111;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
