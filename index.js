@@ -97,6 +97,8 @@ const client = new MongoClient(uri, {
 
 // ---------------------- Finish Loading Data ---------------------------------
 
+app.use('/', express.static(path.join(__dirname, 'public')))
+
 // get-data requests render a webpage with data from the database
 app.use('/get-data', (req, res) => {
     // render the data view
@@ -156,9 +158,9 @@ app.use('/graph2', (req, res) => {
 });
 
 //home page
-app.use('/', express.static(path.join(__dirname, 'public')))
-
-app.use(express.static(path.join(__dirname, 'public')))
+app.use('/', (req, res) => {
+  res.render('index.ejs');
+})
 
 // listen for requests
 app.listen(port, () => {

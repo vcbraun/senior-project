@@ -13,10 +13,12 @@
     <!-- topojson support -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js" integrity="sha512-4UKI/XKm3xrvJ6pZS5oTRvIQGIzZFoXR71rRBb1y2N+PbwAsKa5tPl2J6WvbEvwN3TxQCm8hMzsl/pO+82iRlg==" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" type="text/css" href="/css/choropleth.css" />    
+    <link rel="stylesheet" type="text/css" href="/css/choropleth.css" /> 
+    <link rel="stylesheet" type="text/css" href="/css/navbar.css" />   
 </head>
 
 <body>
+    <%- include('partials/navbar') %>
     <h2 id='title'>Confirmed Covid Cases per County</h2>
     <h4> Numbers normalized based on population. Darker = More Cases</h4>
     <svg id='statePleth'> </svg>
