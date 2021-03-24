@@ -49,6 +49,26 @@ const client = new MongoClient(uri, {
           countyData[doc.fips] = 100 * doc.confirmed / doc.population;
         }
 
+        
+          var date = doc.date;
+          var stateN = doc.state;
+          var confirmed = doc.confirmed;
+          if(date in stateCon){
+            var statesL = stateCon[date];
+            if(stateN in statesL){
+              var num = statesL[stateN];
+              (stateCon[date])[stateN] = (num+confirmed);
+            }
+            else{
+              (stateCon[date])[stateN] = confirmed;
+            }
+          }
+          else{
+            stateCon[date] = {};
+            (stateCon[date])[stateN] = confirmed;
+          }
+        
+
     }, () => {
         client.close();
     });
@@ -75,33 +95,8 @@ app.use('/graph', (req, res) => {
 app.use('/piechart', (req, res) => {
   //populating stateCon dictionary from usData
   //the purpose is to sum up all the counties data for each state on a day
-  for(i = 0; i < usData.length; i++){
-    var date = usData[i].date;
-    var stateN = (usData[i].state);
-    var confirmed = usData[i].confirmed;
-    if(date in stateCon){
-      var statesL = stateCon[date];
-      if(stateN in statesL){
-        var num = statesL[stateN];
-        (stateCon[date])[stateN] = (num+confirmed);
-      }
-      else{
-        (stateCon[date])[stateN] = confirmed;
-      }
-    }
-    else{
-      stateCon[date] = {};
-      (stateCon[date])[stateN] = confirmed;
-    }
-  }
-  // var keyz = Object.keys(stateCon);
-  // var printdate1 = keyz[0];
-  // var printdate2 = keyz[keyz.length - 1];
-  // var val1 = stateCon[printdate1];
-  // var val2 = stateCon[printdate2];
-  // console.log(val1);
-  // console.log(val2);
-  // console.log(keyz);
+  
+
   res.render('pie', {dict: stateCon});
 });
 
