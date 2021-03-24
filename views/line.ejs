@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<head>
 <meta charset="utf-8">
 
 <!-- Load d3.js -->
@@ -7,8 +8,14 @@
 <button onclick="update(data)">Confirmed Cases</button>
 <button onclick="update(data)">Deaths</button>
 
+<link rel="stylesheet" type="text/css" href="/css/navbar.css" />
+</head>
+
 <!-- Create a div where the graph will take place -->
+<body>
 <div id="my_dataviz"></div>
+
+</body>
 
 <script>
 
@@ -28,6 +35,9 @@ const parseDate = d3.isoParse;
   //data[val] = parseDate(data[val]);
 //}
 
+function storeCoordinate(xVal, yVal, array) {
+    array.push({x: xVal, y: yVal});
+}
 
 const maxdate = parseDate(thedates[0]);
 var confirmnums = [];
@@ -36,11 +46,14 @@ for(i = 0; i < thedates.length; i++){
   confirmnums[i] = data[thedates[i]];
   thedates[i] = parseDate(thedates[i]);
 }
-var data1 = {};
+var bestdata1 = [];
 var j;
 for(j = 0; j < thedates.length; j++){
-  data1[thedates[j]] = confirmnums[j];
+  storeCoordinate(thedates[j], confirmnums[j], bestdata1);
 }
+console.log("done");
+//var data1 = {};
+
 
 
 
@@ -95,7 +108,7 @@ svg.append("g")
 
      // Create a update selection: bind to the new data
       var u = svg.selectAll(".lineTest")
-        .data([data], function(d){ return (parseDate(d.key)) });
+        .data([data], function(d){ return d.x });
 
       // Updata the line
       u
@@ -106,14 +119,14 @@ svg.append("g")
         .transition()
         .duration(3000)
         .attr("d", d3.line()
-          .x(function(d) { return x(parseDate(d.key)); })
-          .y(function(d) { return y(d.value); }))
+        .x(function(d) { return x(d.x); })
+    .y(function(d) { return y(d.y); }))
           .attr("fill", "none")
           .attr("stroke", "steelblue")
           .attr("stroke-width", 2.5)
     }
 
 
-update(data)
+update(bestdata1)
 
 </script>
