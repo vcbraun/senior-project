@@ -5,6 +5,7 @@
 <script src="https://d3js.org/d3.v4.js"></script>
 
 <button onclick="update(data)">Confirmed Cases</button>
+<button onclick="update(data)">Deaths</button>
 
 <!-- Create a div where the graph will take place -->
 <div id="my_dataviz"></div>
@@ -21,7 +22,7 @@ const maxy = data[thedates[0]];
 //for(var i in data)
     //dataarray.push([i, data [i]]);
 //console.log(dataarray[0][1]);
-var parseDate = d3.isoParse;
+const parseDate = d3.isoParse;
 
 //for (const val in data) {
   //data[val] = parseDate(data[val]);
@@ -35,12 +36,18 @@ for(i = 0; i < thedates.length; i++){
   confirmnums[i] = data[thedates[i]];
   thedates[i] = parseDate(thedates[i]);
 }
+var data1 = {};
+var j;
+for(j = 0; j < thedates.length; j++){
+  data1[thedates[j]] = confirmnums[j];
+}
+
 
 
 
 // set the dimensions and margins of the graph
-var margin = {top: 10, right: 30, bottom: 30, left: 50},
-    width = 460 - margin.left - margin.right,
+var margin = {top: 20, right: 30, bottom: 30, left: 70},
+    width = 760 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
@@ -88,7 +95,7 @@ svg.append("g")
 
      // Create a update selection: bind to the new data
       var u = svg.selectAll(".lineTest")
-        .data([data], function(d){ return parseDate(d.key) });
+        .data([data], function(d){ return (parseDate(d.key)) });
 
       // Updata the line
       u
