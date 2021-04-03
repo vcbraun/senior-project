@@ -1,6 +1,5 @@
 console.log(countyCovidData);
 console.log(stateCovidData);
-console.log(statePopulationData);
 
 let countyURL = 'https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/counties.json';
 let educationURL = 'https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/for_user_education.json';
@@ -9,13 +8,13 @@ let countyData;
 let stateData;
 
 let stateFips = 
-   {01: 'Alabama',
-    02: 'Alaska',
-    04: 'Arizona',
-    05: 'Arkansas',
-    06: 'California',
-    08: 'Colorado',
-    09: 'Connecticut',
+   {'01': 'Alabama',
+    '02': 'Alaska',
+    '04': 'Arizona',
+    '05': 'Arkansas',
+    '06': 'California',
+    '08': 'Colorado',
+    '09': 'Connecticut',
     10: 'Delaware',
     12: 'Florida',
     13: 'Georgia',
@@ -80,7 +79,7 @@ let drawCountyMap = () => {
             .attr('fill', (countyDataItem) => {
                 let id = countyDataItem['id'];
 
-                let percentage = countyCovidData[id];
+                let percentage = countyCovidData[id] * 100;
 
                 return "rgba(0, 0, 150, " + (percentage / 20) + ")";
             })
@@ -96,13 +95,19 @@ let drawStateMap = () => {
             .attr('class', 'state')
             .attr('fill', (stateDataItem) => {
                 let id = stateDataItem['id'];
+                let percentage = 0.2;
 
-                let percentage = stateCovidData[stateFips[id]] / statePopulationData[stateFips[id]];
-                console.log("State: " + stateFips[id]);
-                console.log("Cases: " + stateCovidData[stateFips[id]]);
-                console.log("Population: " + statePopulationData[stateFips[id]]);
+                if (stateCovidData[stateFips[id]])
+                {
+                    percentage = 100 * stateCovidData[stateFips[id]].confirmed / stateCovidData[stateFips[id]].population;
+                }
+                else
+                {
+                    console.log(id);
+                    console.log(typeof(id));
+                }
 
-                return "rgba(0, 0, 150, " + 5 * percentage + ")";
+                return "rgba(0, 0, 150, " + percentage / 20 + ")";
             })
 }
 

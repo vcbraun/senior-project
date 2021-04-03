@@ -29,7 +29,10 @@ const client = new MongoClient(uri, {
   });
   // ---------------------- Load Data into usData -----------------------------
   var usData = [];
-  var countyData = {};
+
+  var stateConfirmedMostRecent = {};
+  var countyConfirmedMostRecent = {};
+
   var stateCon = {};
   var stateDeath = {};
   var statePop = {};
@@ -46,9 +49,23 @@ const client = new MongoClient(uri, {
     data.forEach((doc, err) => {     
         usData.push(doc);
 
-        if (!(doc.fips in countyData))
-        {
-          countyData[doc.fips] = 100 * doc.confirmed / doc.population;
+        if (!(doc.fips in countyConfirmedMostRecent)) {
+          countyConfirmedMostRecent[doc.fips] = doc.confirmed / doc.population;
+
+          if (doc.population && doc.confirmed)
+          {
+            if (!(doc.state in stateConfirmedMostRecent)) {
+                stateConfirmedMostRecent[doc.state] = {}
+
+                stateConfirmedMostRecent[doc.state].population = doc.population;
+                 stateConfirmedMostRecent[doc.state].confirmed = doc.confirmed;
+            }
+            else {
+              stateConfirmedMostRecent[doc.state].population += doc.population;
+              stateConfirmedMostRecent[doc.state].confirmed += doc.confirmed;
+            }
+          }  
+          
         }
 
           var date = doc.date;
@@ -106,9 +123,8 @@ app.use('/get-data', (req, res) => {
 });
 
 app.use('/choropleth', (req, res) => {
-  res.render('choropleth', {counties: countyData,
-                            pop: statePop['Mon Mar 22 2021 20:00:00 GMT-0400 (Eastern Daylight Time)'],
-                            stateConfirmed: stateCon['Mon Mar 22 2021 20:00:00 GMT-0400 (Eastern Daylight Time)']});
+  res.render('choropleth', {counties: countyConfirmedMostRecent,
+                            states: stateConfirmedMostRecent});
 });
 
 //simple d3 graph with hardcoded data
@@ -165,5 +181,4 @@ app.use('/', (req, res) => {
 // listen for requests
 app.listen(port, () => {
     console.log(`Listening for requests at http://localhost:${port}`);
-    console.log(`Click on http://localhost:${port}/query.html`)
 });
