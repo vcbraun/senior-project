@@ -14,6 +14,12 @@ h2 {
     margin-top: 10px;
 }
 
+#tooltip {
+    visibility: hidden;
+    height: auto;
+    width: auto;
+}
+
 svg {
     background-color: whitesmoke;
 }
@@ -22,7 +28,7 @@ svg {
     fill: black;
 }
 
-#countyPleth, #statePleth {
+#countryPleth, #statePleth {
     min-width: 1000px;
     min-height: 600px;
 }

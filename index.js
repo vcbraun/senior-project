@@ -122,9 +122,12 @@ app.use('/get-data', (req, res) => {
     res.render('dataTable', {items: usData});
 });
 
+app.use('/choropleth/state', (req, res) => {
+  res.render('stateChoropleth', {counties: countyConfirmedMostRecent});
+});
+
 app.use('/choropleth', (req, res) => {
-  res.render('choropleth', {counties: countyConfirmedMostRecent,
-                            states: stateConfirmedMostRecent});
+  res.render('choropleth', {states: stateConfirmedMostRecent});
 });
 
 //simple d3 graph with hardcoded data

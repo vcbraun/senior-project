@@ -21,15 +21,13 @@
     <%- include('partials/navbar') %>
     <h2 id='title'>Confirmed Covid Cases per County</h2>
     <h4> Numbers normalized based on population. Darker = More Cases</h4>
-    
-    <div id='tooltip'></div>
-    
-    <svg id='countryPleth'> </svg>
+
+    <svg id='statePleth'> </svg>
 
 </body>
 <script>
-    var stateCovidData = <%- JSON.stringify(states); %>
+    var countyCovidData = <%- JSON.stringify(counties); %>
 
 </script>
-<script defer src="/scripts/choropleth.js"></script>
+<script defer src="/scripts/stateChoropleth.js"></script>
 </html>

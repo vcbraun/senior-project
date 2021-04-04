@@ -1,10 +1,8 @@
-console.log(countyCovidData);
 console.log(stateCovidData);
 
 let countyURL = 'https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/counties.json';
 let educationURL = 'https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/for_user_education.json';
 
-let countyData;
 let stateData;
 
 let stateFips = 
@@ -65,25 +63,9 @@ let stateFips =
     78: 'Virgin Islands'
     };
 
-let countyPleth = d3.select('#countyPleth');
-let statePleth = d3.select('#statePleth');
+let statePleth = d3.select('#countryPleth');
+let tooltip = d3.select('#tooltip');
 
-let drawCountyMap = () => {
-
-    countyPleth.selectAll('path')
-            .data(countyData)
-            .enter()
-            .append('path')
-            .attr('d', d3.geoPath())
-            .attr('class', 'county')
-            .attr('fill', (countyDataItem) => {
-                let id = countyDataItem['id'];
-
-                let percentage = countyCovidData[id] * 100;
-
-                return "rgba(0, 0, 150, " + (percentage / 20) + ")";
-            })
-}
 
 let drawStateMap = () => {
 
@@ -93,6 +75,16 @@ let drawStateMap = () => {
             .append('path')
             .attr('d', d3.geoPath())
             .attr('class', 'state')
+            .attr('fips', (item) => {
+                return item['id'];
+            })
+            .attr('data-confirmed', (item) => {
+                let id = item['id'];
+                if (stateCovidData[stateFips[id]])
+                    return stateCovidData[stateFips[id]].confirmed;
+                else
+                    return 0;
+            })
             .attr('fill', (stateDataItem) => {
                 let id = stateDataItem['id'];
                 let percentage = 0.2;
@@ -104,10 +96,29 @@ let drawStateMap = () => {
                 else
                 {
                     console.log(id);
-                    console.log(typeof(id));
                 }
 
                 return "rgba(0, 0, 150, " + percentage / 20 + ")";
+            })
+            .on('mouseover', (stateDataItem) => {
+                tooltip.transition()
+                        .style('visibility', 'visible');
+
+                let id = stateDataItem['id'];
+                let state;
+
+                if (stateCovidData[stateFips[id]])
+                    state = stateCovidData[stateFips[id]];
+
+                tooltip.text(state['fips'] + state['data-confirmed']);
+                
+            })
+            .on('mouseout', (countyDataItem) => {
+                tooltip.transition()
+                        .style('visibility', 'hidden')
+            })
+            .on('click', (stateDataItem) => {
+                window.location.href = 'choropleth/state';
             })
 }
 
@@ -116,13 +127,10 @@ d3.json(countyURL).then(
         if(err) {
             console.log(err);
         } else {
-            countyData = topojson.feature(data, data.objects.counties).features;
             stateData = topojson.feature(data, data.objects.states).features;
-            console.log(countyData);
             console.log(stateData);
 
             drawStateMap();
-            drawCountyMap();
         }
     }
 );
