@@ -19,12 +19,24 @@
 
 <body>
     <%- include('partials/navbar') %>
-    <h2 id='title'>Confirmed Covid Cases per County</h2>
-    <h4> Numbers normalized based on population. Darker = More Cases</h4>
     
-    <div id='tooltip'></div>
-    
-    <svg id='countryPleth'> </svg>
+    <div id="choroplethContainer">
+        <h2 id='title'>Percentage of Confirmed Covid Cases per State</h2>
+        <h3> Darker = More Cases</h3>
+        <h4> Click on a state to see a map of counties in that state.</h4>
+        
+        <div class='flexContainer'>
+            <div id='tooltip' class='flexChild'>
+                <h3 id='stateName'>United States</h3>
+                <div id='statsContainer'>
+                    <h4 id='confirmedCases'>Confirmed Cases: </h4>
+                    <h4 id='population'>Population: </h4>
+                </div>
+            </div>
+            
+            <svg id='countryPleth' class='flexChild'> </svg>
+        </div>
+    </div> 
 
 </body>
 <script>

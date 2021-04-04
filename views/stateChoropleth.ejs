@@ -19,11 +19,22 @@
 
 <body>
     <%- include('partials/navbar') %>
-    <h2 id='title'>Confirmed Covid Cases per County</h2>
-    <h4> Numbers normalized based on population. Darker = More Cases</h4>
-
-    <svg id='statePleth'> </svg>
-
+    <div id="choroplethContainer">
+        <h2 id='title'>Percentage of Confirmed Covid Cases per County</h2>
+        <h3> Darker = More Cases</h3>
+        
+        <div class='flexContainer'>
+            <div id='tooltip' class='flexChild'>
+                <h3 id='stateName'><%- stateName %></h3>
+                <div id='statsContainer'>
+                    <h4 id='confirmedCases'>Confirmed Cases: <%- stateConfirmed %></h4>
+                    <h4 id='population'>Population: <%- statePopulation %></h4>
+                </div>
+            </div>
+            
+            <svg id='statePleth' class='flexChild'> </svg>
+        </div>
+    </div> 
 </body>
 <script>
     var countyCovidData = <%- JSON.stringify(counties); %>

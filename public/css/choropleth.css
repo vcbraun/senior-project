@@ -5,30 +5,50 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     font-family: Arial, Helvetica, sans-serif;
 }
 
 h2 {
-    margin-top: 10px;
+    margin-top: 2em;
+}
+
+#choroplethContainer {
+    width: 1400px;
+    margin: auto;
+}
+
+.flexContainer {
+    display: flex;
+    margin-top: 1.5em;
+}
+
+.flexChild {
+    flex: 1;
+}
+
+#stateName {
+    background-color: rgb(138, 29, 74);
+    padding: 1em 1em;
+}
+
+#statsContainer {
+    padding: 1em 1em;
+    line-height: 2em;
 }
 
 #tooltip {
-    visibility: hidden;
-    height: auto;
-    width: auto;
-}
-
-svg {
-    background-color: whitesmoke;
+    width: 100px;
+    background-color: #333;
+    color: #eee;
 }
 
 .state:hover {
-    fill: black;
+    fill: rgb(209, 155, 63);
 }
 
 #countryPleth, #statePleth {
     min-width: 1000px;
     min-height: 600px;
+    padding: 1em 2em;
+    background-color: whitesmoke;
 }

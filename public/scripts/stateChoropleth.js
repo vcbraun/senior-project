@@ -78,7 +78,7 @@ let drawCountyMap = () => {
 
                 let percentage = countyCovidData[id] * 100;
 
-                return "rgba(0, 0, 150, " + (percentage / 20) + ")";
+                return "rgba(138, 29, 74, " + (percentage / 20) + ")";
             })
 }
 

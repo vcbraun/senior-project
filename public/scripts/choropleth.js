@@ -65,7 +65,9 @@ let stateFips =
 
 let statePleth = d3.select('#countryPleth');
 let tooltip = d3.select('#tooltip');
-
+let tooltipName = d3.select('#stateName');
+let tooltipConfirmed = d3.select('#confirmedCases');
+let tooltipPopulation = d3.select('#population');
 
 let drawStateMap = () => {
 
@@ -87,22 +89,27 @@ let drawStateMap = () => {
             })
             .attr('fill', (stateDataItem) => {
                 let id = stateDataItem['id'];
-                let percentage = 0.2;
+                let percentage = 0;
 
                 if (stateCovidData[stateFips[id]])
                 {
-                    percentage = 100 * stateCovidData[stateFips[id]].confirmed / stateCovidData[stateFips[id]].population;
+                    percentage = 100 * stateCovidData[stateFips[id]].confirmed / 
+                                       stateCovidData[stateFips[id]].population;
                 }
                 else
                 {
                     console.log(id);
                 }
 
-                return "rgba(0, 0, 150, " + percentage / 20 + ")";
+                return "rgba(138, 29, 74, " + percentage / 20 + ")";
             })
             .on('mouseover', (stateDataItem) => {
-                tooltip.transition()
-                        .style('visibility', 'visible');
+                var e = window.event;
+                var x = (e.clientX + 20) + 'px',
+                    y = (e.clientY + 20) + 'px';
+
+                    tooltip.style.top = y;
+                    tooltip.style.left = x;
 
                 let id = stateDataItem['id'];
                 let state;
@@ -110,15 +117,19 @@ let drawStateMap = () => {
                 if (stateCovidData[stateFips[id]])
                     state = stateCovidData[stateFips[id]];
 
-                tooltip.text(state['fips'] + state['data-confirmed']);
+                tooltipName.text(stateFips[id]);
+                tooltipConfirmed.text("Confirmed Cases: " + state.confirmed);
+                tooltipPopulation.text("Population: " + state.population);
                 
             })
             .on('mouseout', (countyDataItem) => {
-                tooltip.transition()
-                        .style('visibility', 'hidden')
+                tooltipName.text('United States');
+                tooltipConfirmed.text("Confirmed Cases: ");
+                tooltipPopulation.text("Population: ");
             })
             .on('click', (stateDataItem) => {
-                window.location.href = 'choropleth/state';
+                let id = stateDataItem['id'];
+                window.location.href = 'choropleth/state?name=' + stateFips[id];
             })
 }
 

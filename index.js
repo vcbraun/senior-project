@@ -123,7 +123,12 @@ app.use('/get-data', (req, res) => {
 });
 
 app.use('/choropleth/state', (req, res) => {
-  res.render('stateChoropleth', {counties: countyConfirmedMostRecent});
+  let name = req.query.name
+  let state = stateConfirmedMostRecent[name];
+  res.render('stateChoropleth', {counties: countyConfirmedMostRecent, 
+                                  stateName: name, 
+                                  stateConfirmed:state.confirmed, 
+                                  statePopulation:state.population});
 });
 
 app.use('/choropleth', (req, res) => {
