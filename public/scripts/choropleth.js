@@ -101,8 +101,9 @@ let drawStateMap = () => {
                     console.log(id);
                 }
 
-                return "rgba(138, 29, 74, " + percentage / 20 + ")";
+                return "rgba(138, 29, 74, " + percentage / 18 + ")";
             })
+            .attr('stroke', 'whitesmoke')
             .on('mouseover', (stateDataItem) => {
                 var e = window.event;
                 var x = (e.clientX + 20) + 'px',

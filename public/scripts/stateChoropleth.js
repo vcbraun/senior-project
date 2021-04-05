@@ -64,6 +64,10 @@ let stateFips =
 };
 
 let statePleth = d3.select('#statePleth');
+let tooltip = d3.select('#tooltip');
+let tooltipName = d3.select('#stateName');
+let tooltipConfirmed = d3.select('#confirmedCases');
+let tooltipPopulation = d3.select('#population');
 
 let drawCountyMap = () => {
 
@@ -76,9 +80,33 @@ let drawCountyMap = () => {
             .attr('fill', (countyDataItem) => {
                 let id = countyDataItem['id'];
 
-                let percentage = countyCovidData[id] * 100;
+                let percentage = (countyCovidData[id].confirmed / countyCovidData[id].population) * 100;
 
                 return "rgba(138, 29, 74, " + (percentage / 20) + ")";
+            })
+            .on('mouseover', (countyDataItem) => {
+                var e = window.event;
+                var x = (e.clientX + 20) + 'px',
+                    y = (e.clientY + 20) + 'px';
+
+                    tooltip.style.top = y;
+                    tooltip.style.left = x;
+
+                let id = countyDataItem['id'];
+                let county;
+
+                if (countyCovidData[id])
+                    county = countyCovidData[id];
+
+                tooltipName.text(county.name);
+                tooltipConfirmed.text("Confirmed Cases: " + county.confirmed);
+                tooltipPopulation.text("Population: " + county.population);
+                
+            })
+            .on('mouseout', (countyDataItem) => {
+                tooltipName.text(state);
+                tooltipConfirmed.text("Confirmed Cases: " + stateConf);
+                tooltipPopulation.text("Population: " + statePop);
             })
 }
 

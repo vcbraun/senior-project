@@ -50,7 +50,10 @@ const client = new MongoClient(uri, {
         usData.push(doc);
 
         if (!(doc.fips in countyConfirmedMostRecent)) {
-          countyConfirmedMostRecent[doc.fips] = doc.confirmed / doc.population;
+          countyConfirmedMostRecent[doc.fips] = {};
+          countyConfirmedMostRecent[doc.fips].name = doc.county;
+          countyConfirmedMostRecent[doc.fips].confirmed = doc.confirmed;
+          countyConfirmedMostRecent[doc.fips].population = doc.population;
 
           if (doc.population && doc.confirmed)
           {

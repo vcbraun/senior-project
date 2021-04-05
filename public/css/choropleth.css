@@ -42,7 +42,7 @@ h2 {
     color: #eee;
 }
 
-.state:hover {
+.state:hover, .county:hover{
     fill: rgb(209, 155, 63);
 }
 

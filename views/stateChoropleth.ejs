@@ -38,7 +38,9 @@
 </body>
 <script>
     var countyCovidData = <%- JSON.stringify(counties); %>
-
+    var state = <%- JSON.stringify(stateName); %>
+    var stateConf = <%- JSON.stringify(stateConfirmed); %>
+    var statePop = <%- JSON.stringify(statePopulation); %>
 </script>
 <script defer src="/scripts/stateChoropleth.js"></script>
 </html>
