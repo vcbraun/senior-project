@@ -12,12 +12,13 @@
 
 <!-- Create a div where the graph will take place -->
 <body>
-<%- include('partials/navbar') %>
-<br><br>
-  <h1><center>COVID Data Over Time</center></h1>
-<div id="my_dataviz"></div>
-<button id='confirmbutton'></button>
-
+  <%- include('partials/navbar') %>
+  <br><br>
+  <div id="linegraphContainer">
+    <h1><center>COVID Data Over Time</center></h1>
+    <div id="my_dataviz"></div>
+    <button id='confirmButton'></button>
+  </div>
 </body>
 
 <script>

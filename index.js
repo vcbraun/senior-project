@@ -171,7 +171,10 @@ app.use('/graph2', (req, res) => {
 
 //home page
 app.use('/', (req, res) => {
-  res.render('index.ejs');
+  res.render('usViz.ejs', {states: stateConfirmedMostRecent,
+                           dict: stateCon,
+                           data: {itemsc: dateconfirm, 
+                                  itemsd: datedeath}});
 })
 
 // listen for requests

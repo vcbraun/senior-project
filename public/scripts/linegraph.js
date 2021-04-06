@@ -1,30 +1,29 @@
 console.log(dataconfirm);
 console.log(datadeath);
 
+
+// 1. Create Buttons
 var confirmbutton = document.createElement("button");
+var deathbutton = document.createElement("button");
+
 confirmbutton.innerHTML = "Confirmed Cases";
+deathbutton.innerHTML = "Number of Deaths";
 
-// 2. Append somewhere
-var body = document.getElementsByTagName("body")[0];
-body.appendChild(confirmbutton);
+// 2. Append to Container
+var graphContainer = document.getElementById("linegraphContainer")
+graphContainer.appendChild(confirmbutton);
+graphContainer.appendChild(deathbutton);
 
-// 3. Add event handler
+// 3. Add event handlers
 confirmbutton.addEventListener ("click", function() {
   update(bestdata1);
 });
 
-var deathbutton = document.createElement("button");
-deathbutton.innerHTML = "Number of Deaths";
-
-// 2. Append somewhere
-var body = document.getElementsByTagName("body")[0];
-body.appendChild(deathbutton);
-
-// 3. Add event handler
 deathbutton.addEventListener ("click", function() {
   update(bestdata2);
 });
 
+// Get dates
 var thedates = Object.keys(dataconfirm);
 const maxy = dataconfirm[thedates[0]];
 
