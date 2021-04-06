@@ -24,14 +24,39 @@
         <h2 id='title'>Percentage of Confirmed Covid Cases per State</h2>
         <h3> Darker = More Cases</h3>
         <h4> Click on a state to see a map of counties in that state.</h4>
-        
+
         <div class='flexContainer'>
             <div id='tooltip' class='flexChild'>
-                <h3 id='stateName'>United States</h3>
-                <div id='statsContainer'>
-                    <h4 id='confirmedCases'>Confirmed Cases: </h4>
-                    <h4 id='population'>Population: </h4>
+                <div id="statsHeader">
+                    <h3 id='stateName'>United States</h3>
+                <h4 id='population'>Population: </h4>
                 </div>
+                
+                <div id='statsContainer'>
+                    <h3>Confirmed Cases</h3>
+                    <h4 id='percentageCases'>% of Population: </h4>
+                    <h4 id='absoluteCases'>Absolute Number: </h4>
+
+                    <br>
+                    <h3>Deaths</h3>
+                    <h4 id='percentageDeaths'>% of Population: </h4>
+                    <h4 id='absoluteDeaths'>Absolute Number: </h4>
+
+                    <br>
+                    <form>
+                        <h4>Color map by:</h4>
+                        
+                        <label>
+                            Cases
+                        <input type="radio" value="cases" name="coloring" checked>
+                        </label>
+    
+                        <label>
+                            Deaths
+                        <input type="radio" value="deaths" name="coloring">
+                        </label>
+                    </form>
+                </div> 
             </div>
             
             <svg id='countryPleth' class='flexChild'> </svg>

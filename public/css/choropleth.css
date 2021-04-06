@@ -8,6 +8,13 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+h1 {
+    font-size: 30px;
+    height: 2em;
+    line-height: 2em;
+    text-align: center;
+}
+
 h2 {
     margin-top: 2em;
 }
@@ -26,7 +33,7 @@ h2 {
     flex: 1;
 }
 
-#stateName {
+#statsHeader {
     background-color: rgb(138, 29, 74);
     padding: 1em 1em;
 }
@@ -34,6 +41,11 @@ h2 {
 #statsContainer {
     padding: 1em 1em;
     line-height: 2em;
+    position: relative;
+}
+
+#statsContainer h3 {
+    border-bottom: 1px solid grey;
 }
 
 #tooltip {
@@ -52,3 +64,4 @@ h2 {
     padding: 1em 2em;
     background-color: whitesmoke;
 }
+

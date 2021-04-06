@@ -30,8 +30,8 @@ const client = new MongoClient(uri, {
   // ---------------------- Load Data into usData -----------------------------
   var usData = [];
 
-  var stateConfirmedMostRecent = {};
-  var countyConfirmedMostRecent = {};
+  var stateDataMostRecent = {};
+  var countyDataMostRecent = {};
 
   var stateCon = {};
   var stateDeath = {};
@@ -51,23 +51,26 @@ const client = new MongoClient(uri, {
     data.forEach((doc, err) => {
         usData.push(doc);
 
-        if (!(doc.fips in countyConfirmedMostRecent)) {
-          countyConfirmedMostRecent[doc.fips] = {};
-          countyConfirmedMostRecent[doc.fips].name = doc.county;
-          countyConfirmedMostRecent[doc.fips].confirmed = doc.confirmed;
-          countyConfirmedMostRecent[doc.fips].population = doc.population;
+        if (!(doc.fips in countyDataMostRecent)) {
+          countyDataMostRecent[doc.fips] = {};
+          countyDataMostRecent[doc.fips].name = doc.county;
+          countyDataMostRecent[doc.fips].confirmed = doc.confirmed;
+          countyDataMostRecent[doc.fips].population = doc.population;
+          countyDataMostRecent[doc.fips].deaths = doc.deaths;
 
-          if (doc.population && doc.confirmed)
+          if (doc.population && doc.confirmed && doc.deaths)
           {
-            if (!(doc.state in stateConfirmedMostRecent)) {
-                stateConfirmedMostRecent[doc.state] = {}
+            if (!(doc.state in stateDataMostRecent)) {
+                stateDataMostRecent[doc.state] = {}
 
-                stateConfirmedMostRecent[doc.state].population = doc.population;
-                 stateConfirmedMostRecent[doc.state].confirmed = doc.confirmed;
+                stateDataMostRecent[doc.state].population = doc.population;
+                stateDataMostRecent[doc.state].confirmed = doc.confirmed;
+                stateDataMostRecent[doc.state].deaths = doc.deaths;
             }
             else {
-              stateConfirmedMostRecent[doc.state].population += doc.population;
-              stateConfirmedMostRecent[doc.state].confirmed += doc.confirmed;
+              stateDataMostRecent[doc.state].population += doc.population;
+              stateDataMostRecent[doc.state].confirmed += doc.confirmed;
+              stateDataMostRecent[doc.state].deaths += doc.deaths;
             }
           }
 
@@ -137,15 +140,15 @@ app.use('/get-data', (req, res) => {
 
 app.use('/choropleth/state', (req, res) => {
   let name = req.query.name
-  let state = stateConfirmedMostRecent[name];
-  res.render('stateChoropleth', {counties: countyConfirmedMostRecent,
+  let state = stateDataMostRecent[name];
+  res.render('stateChoropleth', {counties: countyDataMostRecent,
                                   stateName: name,
                                   stateConfirmed:state.confirmed,
                                   statePopulation:state.population});
 });
 
 app.use('/choropleth', (req, res) => {
-  res.render('choropleth', {states: stateConfirmedMostRecent});
+  res.render('choropleth', {states: stateDataMostRecent});
 });
 
 //simple d3 graph with hardcoded data
@@ -171,7 +174,7 @@ app.use('/graph2', (req, res) => {
 
 //home page
 app.use('/', (req, res) => {
-  res.render('usViz.ejs', {states: stateConfirmedMostRecent,
+  res.render('usViz.ejs', {states: stateDataMostRecent,
                            dict: stateCon,
                            data: {itemsc: dateconfirm, 
                                   itemsd: datedeath}});

@@ -60,16 +60,46 @@ let stateFips =
     69: 'Northern Mariana Islands',
     72: 'Puerto Rico',
     78: 'Virgin Islands'
-    };
+};
 
+// select all the relevant html elements
 let statePleth = d3.select('#countryPleth');
 let tooltip = d3.select('#tooltip');
 let tooltipName = d3.select('#stateName');
-let tooltipConfirmed = d3.select('#confirmedCases');
 let tooltipPopulation = d3.select('#population');
+let tooltipConfirmed = d3.select('#absoluteCases');
+let tooltipPercentageConfirmed = d3.select('#percentageCases');
+let tooltipDeaths = d3.select('#absoluteDeaths');
+let tooltipPercentageDeaths = d3.select('#percentageDeaths');
 
-let drawStateMap = () => {
+// detect which radio button is selected
 
+// Calculate US aggregate data
+let usPop = 0,
+    usConfirmed = 0,
+    usDeaths = 0,
+    usPercentDeaths = 0;
+    usPercentConfirmed = 0;
+
+for (state in stateCovidData)
+{
+    usPop += stateCovidData[state].population;
+    usConfirmed += stateCovidData[state].confirmed;
+    usDeaths += stateCovidData[state].deaths;
+}
+
+usPercentConfirmed = 100 * usConfirmed / usPop;
+usPercentDeaths = 100 * usDeaths / usPop;
+
+// Display data in tooltip
+tooltipConfirmed.text("Absolute: " + usConfirmed);
+tooltipPercentageConfirmed.text("% of Population: " + usPercentConfirmed.toFixed(2));
+tooltipPopulation.text("Population: " + usPop);
+tooltipDeaths.text("Absolute: " + usDeaths);
+tooltipPercentageDeaths.text("% of Population:" + usPercentDeaths.toFixed(2));
+
+// Draw the choropleth
+function drawStateMap(){
     statePleth.selectAll('path')
             .data(stateData)
             .enter()
@@ -92,15 +122,16 @@ let drawStateMap = () => {
 
                 if (stateCovidData[stateFips[id]])
                 {
+
                     percentage = 100 * stateCovidData[stateFips[id]].confirmed / 
-                                       stateCovidData[stateFips[id]].population;
+                                    stateCovidData[stateFips[id]].population;
                 }
                 else
                 {
                     console.log(id);
                 }
 
-                return "rgba(138, 29, 74, " + percentage / 18 + ")";
+                return "rgba(138, 29, 74, " + percentage / 15 + ")";
             })
             .attr('stroke', 'whitesmoke')
             .on('mouseover', (stateDataItem) => {
@@ -117,15 +148,27 @@ let drawStateMap = () => {
                 if (stateCovidData[stateFips[id]])
                     state = stateCovidData[stateFips[id]];
 
+                let percentageConfirmed = 100 * state.confirmed / state.population;
+                let percentageDeaths = 100 * state.deaths / state.population;
+
                 tooltipName.text(stateFips[id]);
-                tooltipConfirmed.text("Confirmed Cases: " + state.confirmed);
                 tooltipPopulation.text("Population: " + state.population);
-                
+
+                tooltipConfirmed.text("Absolute: " + state.confirmed);
+                tooltipPercentageConfirmed.text("% of Population: " + percentageConfirmed.toFixed(2));
+
+                tooltipDeaths.text("Absolute: " + state.deaths);
+                tooltipPercentageDeaths.text("% of Population: " + percentageDeaths.toFixed(2));
             })
             .on('mouseout', (countyDataItem) => {
                 tooltipName.text('United States');
-                tooltipConfirmed.text("Confirmed Cases: ");
-                tooltipPopulation.text("Population: ");
+                tooltipPopulation.text("Population: " + usPop);
+
+                tooltipConfirmed.text("Absolute: " + usConfirmed);
+                tooltipPercentageConfirmed.text("% of Population: " + usPercentConfirmed.toFixed(2));
+
+                tooltipDeaths.text("Absolute: " + usDeaths);
+                tooltipPercentageDeaths.text("% of Population:" + usPercentDeaths.toFixed(2));
             })
             .on('click', (stateDataItem) => {
                 let id = stateDataItem['id'];
@@ -133,15 +176,51 @@ let drawStateMap = () => {
             })
 }
 
+function recolorMap(stat)
+{
+    statePleth.selectAll('path').attr('fill', (stateDataItem) => {
+        let id = stateDataItem['id'];
+                let percentage = 0;
+
+                if (stateCovidData[stateFips[id]])
+                {
+                    if (stat == "deaths")
+                    {
+                        percentage = 100 * stateCovidData[stateFips[id]].deaths / 
+                                        stateCovidData[stateFips[id]].population;
+                        
+                        document.getElementById("statsHeader").style.backgroundColor = "rgb(48, 72, 150)";
+                        return "rgba(48, 72, 150, " + percentage * 4 + ")";
+                    }
+                    else
+                    {
+                        percentage = 100 * stateCovidData[stateFips[id]].confirmed / 
+                                        stateCovidData[stateFips[id]].population;
+
+                        document.getElementById("statsHeader").style.backgroundColor = 'rgb(138, 29, 74)';
+                        return "rgba(138, 29, 74, " + percentage / 15 + ")";
+                    }
+                }
+
+                return "black";
+    });
+}
+
+
 d3.json(countyURL).then(
     (data, err) => {
         if(err) {
             console.log(err);
         } else {
             stateData = topojson.feature(data, data.objects.states).features;
-            console.log(stateData);
 
             drawStateMap();
+
+            d3.selectAll("input").on("change", function(){
+                recolorMap(this.value);
+            });
+
+            
         }
     }
 );
