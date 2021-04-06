@@ -48,7 +48,7 @@ const client = new MongoClient(uri, {
                      .sort(["date", -1]);
 
     // push the data objects into the results array
-    data.forEach((doc, err) => {     
+    data.forEach((doc, err) => {
         usData.push(doc);
 
         if (!(doc.fips in countyConfirmedMostRecent)) {
@@ -69,8 +69,8 @@ const client = new MongoClient(uri, {
               stateConfirmedMostRecent[doc.state].population += doc.population;
               stateConfirmedMostRecent[doc.state].confirmed += doc.confirmed;
             }
-          }  
-          
+          }
+
         }
         if (doc.date in dateconfirm == true){
           dateconfirm[doc.date] = dateconfirm[doc.date] + doc.confirmed;
@@ -118,7 +118,7 @@ const client = new MongoClient(uri, {
             if (pop != null)
               statePop[date][stateN] = pop;
           }
-        
+
 
     }, () => {
         client.close();
@@ -138,9 +138,9 @@ app.use('/get-data', (req, res) => {
 app.use('/choropleth/state', (req, res) => {
   let name = req.query.name
   let state = stateConfirmedMostRecent[name];
-  res.render('stateChoropleth', {counties: countyConfirmedMostRecent, 
-                                  stateName: name, 
-                                  stateConfirmed:state.confirmed, 
+  res.render('stateChoropleth', {counties: countyConfirmedMostRecent,
+                                  stateName: name,
+                                  stateConfirmed:state.confirmed,
                                   statePopulation:state.population});
 });
 
@@ -153,13 +153,12 @@ app.use('/graph', (req, res) => {
     res.render('d3testj');
 });
 
-//piechart attempt -- tanjuma will pull out stateCon later
-app.use('/piechart', (req, res) => {
-  res.render('pie', {dict: stateCon});
+app.use('/barchart', (req, res) => {
+  res.render('barchart', {dict: stateCon});
 });
 
 app.use('/line', (req, res) => {
-  res.render('line', { data: {itemsc: dateconfirm, itemsd: datedeath} }); 
+  res.render('line', { data: {itemsc: dateconfirm, itemsd: datedeath} });
 });
 
 //simple c3 graph with hardcoded data from the items array
