@@ -144,7 +144,8 @@ app.use('/choropleth/state', (req, res) => {
   res.render('stateChoropleth', {counties: countyDataMostRecent,
                                   stateName: name,
                                   stateConfirmed:state.confirmed,
-                                  statePopulation:state.population});
+                                  statePopulation:state.population,
+                                  stateDeaths: state.deaths});
 });
 
 app.use('/choropleth', (req, res) => {

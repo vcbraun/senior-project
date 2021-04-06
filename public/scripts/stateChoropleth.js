@@ -5,69 +5,25 @@ let educationURL = 'https://cdn.freecodecamp.org/testable-projects-fcc/data/chor
 
 let countyData;
 
-let stateFips = 
-   {'01': 'Alabama',
-    '02': 'Alaska',
-    '04': 'Arizona',
-    '05': 'Arkansas',
-    '06': 'California',
-    '08': 'Colorado',
-    '09': 'Connecticut',
-    10: 'Delaware',
-    12: 'Florida',
-    13: 'Georgia',
-    15: 'Hawaii',
-    16: 'Idaho',
-    17: 'Illinois',
-    18: 'Indiana',
-    19: 'Iowa',
-    20: 'Kansas',
-    21: 'Kentucky',
-    22: 'Louisiana',
-    23: 'Maine',
-    24: 'Maryland',
-    25: 'Massachusetts',
-    26: 'Michigan',
-    27: 'Minnesota',
-    28: 'Mississippi',
-    29: 'Missouri',
-    30: 'Montana',
-    31: 'Nebraska',
-    32: 'Nevada',
-    33: 'New Hampshire',
-    34: 'New Jersey',
-    35: 'New Mexico',
-    36: 'New York',
-    37: 'North Carolina',
-    38: 'North Dakota',
-    39: 'Ohio',
-    40: 'Oklahoma',
-    41: 'Oregon',
-    42: 'Pennsylvania',
-    44: 'Rhode Island',
-    45: 'South Carolina',
-    46: 'South Dakota',
-    47: 'Tennessee',
-    48: 'Texas',
-    49: 'Utah',
-    50: 'Vermont',
-    51: 'Virginia',
-    53: 'Washington',
-    54: 'West Virginia',
-    55: 'Wisconsin',
-    56: 'Wyoming',
-    60: 'American Samoa',
-    66: 'Guam',
-    69: 'Northern Mariana Islands',
-    72: 'Puerto Rico',
-    78: 'Virgin Islands'
-};
-
 let statePleth = d3.select('#statePleth');
 let tooltip = d3.select('#tooltip');
 let tooltipName = d3.select('#stateName');
-let tooltipConfirmed = d3.select('#confirmedCases');
+let tooltipConfirmed = d3.select('#absoluteCases');
+let tooltipPercentageConfirmed = d3.select('#percentageCases');
+let tooltipDeaths = d3.select('#absoluteDeaths');
+let tooltipPercentageDeaths = d3.select('#percentageDeaths');
 let tooltipPopulation = d3.select('#population');
+
+let percentageConfirmed = 100 * stateConf / statePop;
+let percentageDeaths = 100 * stateDeaths / statePop;
+
+tooltipPopulation.text("Population: " + statePop);
+
+tooltipPercentageConfirmed.text("Confirmed Cases: " + percentageConfirmed.toFixed(2));
+tooltipConfirmed.text("Absolute: " + stateConf);
+
+tooltipDeaths.text("Absolute: " + stateDeaths);
+tooltipPercentageDeaths.text("% of Population:" + percentageDeaths.toFixed(2));
 
 let drawCountyMap = () => {
 
@@ -98,16 +54,52 @@ let drawCountyMap = () => {
                 if (countyCovidData[id])
                     county = countyCovidData[id];
 
+                let percentageCases = 100 * county.confirmed / county.population;
+                let percentageDeaths = 100 * county.deaths / county.population;
+
                 tooltipName.text(county.name);
-                tooltipConfirmed.text("Confirmed Cases: " + county.confirmed);
                 tooltipPopulation.text("Population: " + county.population);
+
+                tooltipConfirmed.text("Absolute: " + county.confirmed);
+                tooltipPercentageConfirmed.text("% of Population: " + percentageCases.toFixed(2));
                 
+                tooltipDeaths.text("Absolute: " + county.confirmed);
+                tooltipPercentageDeaths.text("% of Population: " + percentageDeaths.toFixed(2));
             })
             .on('mouseout', (countyDataItem) => {
+                let percentage = 100 * stateConf / statePop;
+
                 tooltipName.text(state);
-                tooltipConfirmed.text("Confirmed Cases: " + stateConf);
+                tooltipConfirmed.text("Abolute: " + stateConf);
+                tooltipPercentageConfirmed.text("% of Population: " + percentage.toFixed(2));
                 tooltipPopulation.text("Population: " + statePop);
             })
+}
+
+function recolorMap(stat)
+{
+    statePleth.selectAll('path').attr('fill', (countyDataItem) => {
+        let id = countyDataItem['id'];
+
+        if (stat == "deaths")
+        {
+            percentage = 100 * countyCovidData[id].deaths / 
+                            countyCovidData[id].population;
+            
+            document.getElementById("statsHeader").style.backgroundColor = "rgb(48, 72, 150)";
+            return "rgba(48, 72, 150, " + percentage * 2 + ")";
+        }
+        else
+        {
+            percentage = 100 * countyCovidData[id].confirmed / 
+                            countyCovidData[id].population;
+
+            document.getElementById("statsHeader").style.backgroundColor = 'rgb(138, 29, 74)';
+            return "rgba(138, 29, 74, " + percentage / 20 + ")";
+        }
+
+        return "black";
+    });
 }
 
 d3.json(countyURL).then(
@@ -115,11 +107,13 @@ d3.json(countyURL).then(
         if(err) {
             console.log(err);
         } else {
-            console.log(data);
             countyData = topojson.feature(data, data.objects.counties).features;
-            console.log(countyData);
 
             drawCountyMap();
+
+            d3.selectAll("input").on("change", function(){
+                recolorMap(this.value);
+            });
         }
     }
 );
