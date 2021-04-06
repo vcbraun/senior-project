@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Choropleth Map</title>
+
+    <!-- d3.js libraries -->
+    <script src="https://d3js.org/d3.v5.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+
+    <!-- topojson support -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js" integrity="sha512-4UKI/XKm3xrvJ6pZS5oTRvIQGIzZFoXR71rRBb1y2N+PbwAsKa5tPl2J6WvbEvwN3TxQCm8hMzsl/pO+82iRlg==" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/choropleth.css" /> 
+    <link rel="stylesheet" type="text/css" href="/css/line.css" />
+    <link rel="stylesheet" type="text/css" href="/css/navbar.css" />   
+</head>
+
+<body>
+    <%- include('partials/navbar') %>
+    
+    <!-- Choropleth -->
+    <div id="choroplethContainer">
+        <h2 id='title'>Percentage of Confirmed Covid Cases per State</h2>
+        <h3> Darker = More Cases</h3>
+        <h4> Click on a state to see a map of counties in that state.</h4>
+
+        <div class='flexContainer'>
+            <div id='tooltip' class='flexChild'>
+                <div id="statsHeader">
+                    <h3 id='stateName'>United States</h3>
+                <h4 id='population'>Population: </h4>
+                </div>
+                
+                <div id='statsContainer'>
+                    <h3>Confirmed Cases</h3>
+                    <h4 id='percentageCases'>% of Population: </h4>
+                    <h4 id='absoluteCases'>Absolute Number: </h4>
+
+                    <br>
+                    <h3>Deaths</h3>
+                    <h4 id='percentageDeaths'>% of Population: </h4>
+                    <h4 id='absoluteDeaths'>Absolute Number: </h4>
+
+                    <br>
+                    <form>
+                        <h4>Color map by:</h4>
+                        
+                        <label>
+                            Cases
+                        <input type="radio" value="cases" name="coloring" checked>
+                        </label>
+    
+                        <label>
+                            Deaths
+                        <input type="radio" value="deaths" name="coloring">
+                        </label>
+                    </form>
+                </div> 
+            </div>
+            
+            <svg id='countryPleth' class='flexChild'> </svg>
+        </div>
+    </div> 
+
+    <!-- Line Graph -->
+    <div id="linegraphContainer">
+        <h1><center>COVID Data Over Time</center></h1>
+
+        <!-- Graph Div -->
+        <div id="my_dataviz"></div>
+
+        <button id='confirmbutton'></button>
+    </div>
+
+    <!-- Bar Chart -->
+    <div id="barchartContainer">
+        <h2><center>Confirmed Cases</center></h2>
+
+        <!-- To display the data's date -->
+        <div id="one"><h3><center id ="b1"></center></h3></div>
+
+        <!-- Create a div where the graph will be -->
+        <div id="chart"></div>
+    </div>
+
+</body>
+ 
+
+<script>
+    // Choropleth
+    var stateCovidData = <%- JSON.stringify(states); %>
+
+    // Line Graph
+    var dataconfirm = <%- JSON.stringify(data.itemsc); %>;
+    var datadeath = <%- JSON.stringify(data.itemsd); %>;
+
+    // Bar Chart
+    //Initializing an accessible dictionary
+    var dataCopy = <%- JSON.stringify(dict); %>
+</script>
+
+<script defer src="/scripts/choropleth.js"></script>
+<script defer src="/scripts/linegraph.js"></script>
+<script defer src="/scripts/barchart.js"></script>
+
+</html>

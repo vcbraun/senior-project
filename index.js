@@ -173,12 +173,29 @@ app.use('/graph2', (req, res) => {
 
 });
 
-//home page
+// state-specific page
+app.use('/state', (req, res) => {
+  let name = req.query.name
+  let state = stateDataMostRecent[name];
+
+  res.render('stateViz', {counties: countyDataMostRecent,
+                            stateName: name,
+                            stateConfirmed:state.confirmed,
+                            statePopulation:state.population,
+                            stateDeaths: state.deaths,
+                            dict: stateCon,
+                            data: {itemsc: dateconfirm, 
+                                    itemsd: datedeath}});
+})
+
+// home page
 app.use('/', (req, res) => {
-  res.render('usViz.ejs', {states: stateDataMostRecent,
-                           dict: stateCon,
-                           data: {itemsc: dateconfirm, 
-                                  itemsd: datedeath}});
+  
+
+  res.render('usViz', { states: stateDataMostRecent,
+                        dict: stateCon,
+                        data: {itemsc: dateconfirm, 
+                                itemsd: datedeath}});
 })
 
 // listen for requests

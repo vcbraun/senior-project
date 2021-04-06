@@ -172,7 +172,7 @@ function drawStateMap(){
             })
             .on('click', (stateDataItem) => {
                 let id = stateDataItem['id'];
-                window.location.href = 'choropleth/state?name=' + stateFips[id];
+                window.location.href = 'state?name=' + stateFips[id];
             })
 }
 
