@@ -1,119 +1,29 @@
 <!DOCTYPE html>
+<html>
+<head>
 <meta charset="utf-8">
 
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v4.js"></script>
 
-<button onclick="update(data)">Confirmed Cases</button>
-<button onclick="update(data)">Deaths</button>
+<link rel="stylesheet" type="text/css" href="/css/navbar.css" />
+<link rel="stylesheet" type="text/css" href="/css/line.css" />
+</head>
 
 <!-- Create a div where the graph will take place -->
+<body>
+<%- include('partials/navbar') %>
+<br><br>
+  <h1><center>COVID Data Over Time</center></h1>
 <div id="my_dataviz"></div>
+<button id='confirmbutton'></button>
+
+</body>
 
 <script>
-
-
-var data = <%- JSON.stringify(itemsc); %>;
-var thedates = Object.keys(data);
-const maxy = data[thedates[0]];
-
-//var dataarray = [];
-
-//for(var i in data)
-    //dataarray.push([i, data [i]]);
-//console.log(dataarray[0][1]);
-const parseDate = d3.isoParse;
-
-//for (const val in data) {
-  //data[val] = parseDate(data[val]);
-//}
-
-
-const maxdate = parseDate(thedates[0]);
-var confirmnums = [];
-var i;
-for(i = 0; i < thedates.length; i++){
-  confirmnums[i] = data[thedates[i]];
-  thedates[i] = parseDate(thedates[i]);
-}
-var data1 = {};
-var j;
-for(j = 0; j < thedates.length; j++){
-  data1[thedates[j]] = confirmnums[j];
-}
-
-
-
-
-// set the dimensions and margins of the graph
-var margin = {top: 20, right: 30, bottom: 30, left: 70},
-    width = 760 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
-
-// append the svg object to the body of the page
-var svg = d3.select("#my_dataviz")
-  .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
-
-// Initialise a X axis:
-var x = d3.scaleTime().range([0,width]);
-var xAxis = d3.axisBottom().scale(x);
-svg.append("g")
-  .attr("transform", "translate(0," + height + ")")
-  .attr("class","myXaxis")
-
-// Initialize an Y axis
-var y = d3.scaleLinear().range([height, 0]);
-var yAxis = d3.axisLeft().scale(y);
-svg.append("g")
-  .attr("class","myYaxis")
-
-  //data.forEach(function(d) {
-    //    d[0] = parseDate(d[0]);
-    //});
-
-  // Now I can use this dataset:
-  function update(data) {
-
-    // update X axis --> it is a date format
-    x.domain(d3.extent(thedates))
-    svg.selectAll(".myXaxis").transition()
-      .duration(3000)
-      .call(xAxis);
-
-    // update Y axis
-    y.domain([0, maxy])
-    svg.selectAll(".myYaxis")
-     .transition()
-     .duration(3000)
-     .call(yAxis);
-
-
-     // Create a update selection: bind to the new data
-      var u = svg.selectAll(".lineTest")
-        .data([data], function(d){ return (parseDate(d.key)) });
-
-      // Updata the line
-      u
-        .enter()
-        .append("path")
-        .attr("class","lineTest")
-        .merge(u)
-        .transition()
-        .duration(3000)
-        .attr("d", d3.line()
-          .x(function(d) { return x(parseDate(d.key)); })
-          .y(function(d) { return y(d.value); }))
-          .attr("fill", "none")
-          .attr("stroke", "steelblue")
-          .attr("stroke-width", 2.5)
-    }
-
-
-update(data)
+var dataconfirm = <%- JSON.stringify(data.itemsc); %>;
+var datadeath = <%- JSON.stringify(data.itemsd); %>;
 
 </script>
+<script defer src="/scripts/linegraph.js"></script>
+</html>
