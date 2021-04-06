@@ -36,6 +36,8 @@ const client = new MongoClient(uri, {
   var stateCon = {};
   var stateDeath = {};
   var statePop = {};
+  var dateconfirm = {};
+  var datedeath = {};
 
   // connect to the mongo client
   client.connect((err) => {
@@ -69,6 +71,14 @@ const client = new MongoClient(uri, {
             }
           }  
           
+        }
+        if (doc.date in dateconfirm == true){
+          dateconfirm[doc.date] = dateconfirm[doc.date] + doc.confirmed;
+          datedeath[doc.date] = datedeath[doc.date] + doc.deaths;
+        }
+        else{
+          dateconfirm[doc.date] = doc.confirmed;
+          datedeath[doc.date] = doc.deaths;
         }
 
           var date = doc.date;
@@ -149,31 +159,7 @@ app.use('/piechart', (req, res) => {
 });
 
 app.use('/line', (req, res) => {
-  //in my code this section had been in the original section of loading data. it may be fully possible to just add the for each loop up above and have it work fine
-  //i didn't want to mess with it just yet and mess up the choropleth though
-    var data = client.db('covid19')
-                   .collection('us_only')
-                   .find()
-                   .sort(["date", -1])
-
-  // push the data objects into the results array
-  var dateconfirm = {};
-  var datedeath = {};
-  data.forEach((doc, err) => {
-      usData.push(doc);
-      if (doc.date in dateconfirm == true){
-        dateconfirm[doc.date] = dateconfirm[doc.date] + doc.confirmed;
-        datedeath[doc.date] = datedeath[doc.date] + doc.deaths;
-      }
-      else{
-        dateconfirm[doc.date] = doc.confirmed;
-        datedeath[doc.date] = doc.death;
-      }
-
-  }, () => {
-      client.close();
-  });
-  res.render('line', {itemsc: dateconfirm}); //this will eventually take confirmed and death somehow when i find the best way to combine but for the sake of running it i just included the confirms
+  res.render('line', { data: {itemsc: dateconfirm, itemsd: datedeath} }); 
 });
 
 //simple c3 graph with hardcoded data from the items array
