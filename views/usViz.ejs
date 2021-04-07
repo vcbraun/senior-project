@@ -13,14 +13,15 @@
     <!-- topojson support -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js" integrity="sha512-4UKI/XKm3xrvJ6pZS5oTRvIQGIzZFoXR71rRBb1y2N+PbwAsKa5tPl2J6WvbEvwN3TxQCm8hMzsl/pO+82iRlg==" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" type="text/css" href="/css/choropleth.css" /> 
+    <link rel="stylesheet" type="text/css" href="/css/choropleth.css" />
     <link rel="stylesheet" type="text/css" href="/css/line.css" />
-    <link rel="stylesheet" type="text/css" href="/css/navbar.css" />   
+    <link rel="stylesheet" type="text/css" href="/css/navbar.css" />
+    <link rel="stylesheet" type="text/css" href="/css/barchart.css" />
 </head>
 
 <body>
     <%- include('partials/navbar') %>
-    
+
     <!-- Choropleth -->
     <div id="choroplethContainer">
         <h2 id='title'>Percentage of Confirmed Covid Cases per State</h2>
@@ -33,7 +34,7 @@
                     <h3 id='stateName'>United States</h3>
                 <h4 id='population'>Population: </h4>
                 </div>
-                
+
                 <div id='statsContainer'>
                     <h3>Confirmed Cases</h3>
                     <h4 id='percentageCases'>% of Population: </h4>
@@ -47,23 +48,23 @@
                     <br>
                     <form>
                         <h4>Color map by:</h4>
-                        
+
                         <label>
                             Cases
                         <input type="radio" value="cases" name="coloring" checked>
                         </label>
-    
+
                         <label>
                             Deaths
                         <input type="radio" value="deaths" name="coloring">
                         </label>
                     </form>
-                </div> 
+                </div>
             </div>
-            
+
             <svg id='countryPleth' class='flexChild'> </svg>
         </div>
-    </div> 
+    </div>
 
     <!-- Line Graph -->
     <div id="linegraphContainer">
@@ -77,7 +78,7 @@
 
     <!-- Bar Chart -->
     <div id="barchartContainer">
-        <h2><center>Confirmed Cases</center></h2>
+        <h2><center id = "heading"></center></h2>
 
         <!-- To display the data's date -->
         <div id="one"><h3><center id ="b1"></center></h3></div>
@@ -85,9 +86,9 @@
         <!-- Create a div where the graph will be -->
         <div id="chart"></div>
     </div>
-
+  <br>
 </body>
- 
+
 
 <script>
     // Choropleth
@@ -99,7 +100,8 @@
 
     // Bar Chart
     //Initializing an accessible dictionary
-    var dataCopy = <%- JSON.stringify(dict); %>
+    var conData = <%- JSON.stringify(dict.con); %>
+    var totRecentData = <%- JSON.stringify(dict.tot); %>
 </script>
 
 <script defer src="/scripts/choropleth.js"></script>

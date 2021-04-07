@@ -1,0 +1,73 @@
+.bigbtn {
+  margin-top: 0px;
+  margin-right: 5px;
+  line-height: 15px;
+  font-weight: bold;
+  display: inline-block;
+  padding: 5px 5px;
+  background-color: #3c7769;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 9px #23433c;
+}
+.bigbtn:hover {background-color: #66b2a0}
+
+.bigbtn:active {
+  color:#1a332d;
+}
+.smallbtn {
+  margin-top: 0px;
+  margin-right: 5px;
+  line-height: 15px;
+  display: inline-block;
+  padding: 5px 5px;
+  background-color: #4d9987;
+  cursor: pointer;
+  font-style: italic;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 9px #2b554b;
+}
+.smallbtn:hover {background-color: #66b2a0}
+
+.smallbtn:active {
+  color:#1a332d;
+}
+#myTooltip {
+ position: absolute;
+ text-align: left;
+ width: 80px;
+ height: auto;
+ min-height: 20px;
+ padding: 2px;
+ font: 12px sans-serif;
+ background-color: rgb(255, 255, 255);
+ border: 2px solid rgb(100, 161, 209);
+ color: #5E99BD;
+ border-radius: 8px 8px 8px 8px;
+ pointer-events: none;
+ padding: 11px;
+}
+
+#myTooltip:before {
+ box-sizing: border-box;
+ display: inline;
+ font-size: 18px;
+ width: 100%;
+ line-height: 1;
+ color: rgb(100, 161, 209);
+ content: "\25BC";
+ position: absolute;
+ text-align: center;
+ top: 100%;
+ left: -2px;
+}

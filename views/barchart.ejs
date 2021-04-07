@@ -6,18 +6,22 @@
 <script src="https://d3js.org/d3.v4.js"></script>
 <!-- Color scale -->
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/barchart.css" />
 <link rel="stylesheet" type="text/css" href="/css/navbar.css" />
 </head>
 <body>
   <%- include('partials/navbar') %>
-  <h2><center>Confirmed Cases</center></h2>
+  <div id="barchartContainer">
+  <h2><center id = "heading"></center></h2>
   <!-- To display the data's date -->
   <div id="one"><h3><center id ="b1"></center></h3></div>
   <!-- Create a div where the graph will be -->
   <div id="chart"></div>
+</div>
   <script>
   //Initializing an accessible dictionary
-  var dataCopy = <%- JSON.stringify(dict); %>
+  var conData = <%- JSON.stringify(dict.con); %>
+  var totRecentData = <%- JSON.stringify(dict.tot); %>
   </script>
   <script defer src="/scripts/barchart.js"></script>
 </body>

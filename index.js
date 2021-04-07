@@ -158,7 +158,7 @@ app.use('/graph', (req, res) => {
 });
 
 app.use('/barchart', (req, res) => {
-  res.render('barchart', {dict: stateCon});
+  res.render('barchart', {dict: {con: stateCon, tot: stateDataMostRecent}});
 });
 
 app.use('/line', (req, res) => {
@@ -184,17 +184,17 @@ app.use('/state', (req, res) => {
                             statePopulation:state.population,
                             stateDeaths: state.deaths,
                             dict: stateCon,
-                            data: {itemsc: dateconfirm, 
+                            data: {itemsc: dateconfirm,
                                     itemsd: datedeath}});
 })
 
 // home page
 app.use('/', (req, res) => {
-  
+
 
   res.render('usViz', { states: stateDataMostRecent,
-                        dict: stateCon,
-                        data: {itemsc: dateconfirm, 
+                        dict: {con: stateCon, tot: stateDataMostRecent},
+                        data: {itemsc: dateconfirm,
                                 itemsd: datedeath}});
 })
 
