@@ -1,7 +1,6 @@
 console.log(stateCovidData);
 
 let countyURL = 'https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/counties.json';
-
 let stateData;
 
 let stateFips = 
@@ -72,7 +71,6 @@ let tooltipPercentageConfirmed = d3.select('#percentageCases');
 let tooltipDeaths = d3.select('#absoluteDeaths');
 let tooltipPercentageDeaths = d3.select('#percentageDeaths');
 
-// detect which radio button is selected
 
 // Calculate US aggregate data
 let usPop = 0,
@@ -81,12 +79,30 @@ let usPop = 0,
     usPercentDeaths = 0;
     usPercentConfirmed = 0;
 
+let maxConfirmedPercent = 0,
+    maxDeathsPercent = 0;
+
+
 for (state in stateCovidData)
 {
     usPop += stateCovidData[state].population;
     usConfirmed += stateCovidData[state].confirmed;
     usDeaths += stateCovidData[state].deaths;
+
+    let conPercent = stateCovidData[state].confirmed / 
+                           stateCovidData[state].population;
+
+    let deathPercent = stateCovidData[state].deaths / 
+                             stateCovidData[state].population;
+
+    if (conPercent > maxConfirmedPercent)
+        maxConfirmedPercent = conPercent;
+    if (deathPercent > maxDeathsPercent)
+        maxDeathsPercent = deathPercent;
 }
+
+console.log("max conf" + maxConfirmedPercent);
+console.log("max deaths" + maxDeathsPercent);
 
 usPercentConfirmed = 100 * usConfirmed / usPop;
 usPercentDeaths = 100 * usDeaths / usPop;
@@ -97,6 +113,31 @@ tooltipPercentageConfirmed.text("% of Population: " + usPercentConfirmed.toFixed
 tooltipPopulation.text("Population: " + usPop);
 tooltipDeaths.text("Absolute: " + usDeaths);
 tooltipPercentageDeaths.text("% of Population:" + usPercentDeaths.toFixed(2));
+
+// Create the legend
+// let legend = d3.select('#choroplethLegend');
+// let defs = legend.append('defs');
+
+// let linearGradient = defs.append('linearGradient')
+//                          .attr('id', 'linear-gradient');
+
+// linearGradient.attr('x1', '0%')
+//               .attr('y1', '0%')
+//               .attr('x2', '100%')
+//               .attr('y2', '0%');
+
+// linearGradient.append('stop')
+//               .attr('offset', '0%')
+//               .attr('stop-color', 'whitesmoke');
+
+// linearGradient.append('stop')
+//               .attr('offset', '100%')
+//               .attr('stop-color', 'rgba(138, 29, 74, 1)');
+
+// legend.append('rect')
+//       .attr('width', 300)
+//       .attr('height', 20)
+//       .style('fill', 'url(#linear-gradient)');
 
 // Draw the choropleth
 function drawStateMap(){
@@ -123,7 +164,7 @@ function drawStateMap(){
                 if (stateCovidData[stateFips[id]])
                 {
 
-                    percentage = 100 * stateCovidData[stateFips[id]].confirmed / 
+                    percentage = stateCovidData[stateFips[id]].confirmed / 
                                     stateCovidData[stateFips[id]].population;
                 }
                 else
@@ -131,7 +172,7 @@ function drawStateMap(){
                     console.log(id);
                 }
 
-                return "rgba(138, 29, 74, " + percentage / 15 + ")";
+                return "rgba(138, 29, 74, " + percentage / maxConfirmedPercent + ")";
             })
             .attr('stroke', 'whitesmoke')
             .on('mouseover', (stateDataItem) => {
@@ -186,19 +227,19 @@ function recolorMap(stat)
                 {
                     if (stat == "deaths")
                     {
-                        percentage = 100 * stateCovidData[stateFips[id]].deaths / 
+                        percentage = stateCovidData[stateFips[id]].deaths / 
                                         stateCovidData[stateFips[id]].population;
                         
                         document.getElementById("statsHeader").style.backgroundColor = "rgb(48, 72, 150)";
-                        return "rgba(48, 72, 150, " + percentage * 4 + ")";
+                        return "rgba(48, 72, 150, " + percentage/maxDeathsPercent + ")";
                     }
                     else
                     {
-                        percentage = 100 * stateCovidData[stateFips[id]].confirmed / 
+                        percentage = stateCovidData[stateFips[id]].confirmed / 
                                         stateCovidData[stateFips[id]].population;
 
                         document.getElementById("statsHeader").style.backgroundColor = 'rgb(138, 29, 74)';
-                        return "rgba(138, 29, 74, " + percentage / 15 + ")";
+                        return "rgba(138, 29, 74, " + percentage / maxConfirmedPercent + ")";
                     }
                 }
 

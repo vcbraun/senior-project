@@ -92,6 +92,9 @@
 <script>
     // Choropleth
     var countyCovidData = <%- JSON.stringify(counties); %>
+
+    console.log(countyCovidData);
+
     var state = <%- JSON.stringify(stateName); %>
     var stateConf = <%- JSON.stringify(stateConfirmed); %>
     var statePop = <%- JSON.stringify(statePopulation); %>
