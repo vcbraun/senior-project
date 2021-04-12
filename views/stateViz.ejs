@@ -30,7 +30,7 @@
         <div class='flexContainer'>
             <div id='tooltip' class='flexChild'>
                 <div id="statsHeader">
-                    <h3 id='stateName'>United States</h3>
+                    <h3 id='stateName'><%- stateName %></h3>
                 <h4 id='population'>Population: </h4>
                 </div>
                 
@@ -63,6 +63,9 @@
             
             <svg id='statePleth' class='flexChild'> </svg>
         </div>
+        <svg viewBox="0 0 300 5" id='choroplethLegend'></svg>
+        <div id='legendMinLabel'>0%</div>
+        <div id='legendMaxLabel'>10%</div>
     </div> 
 
     <!-- Line Graph -->
@@ -92,10 +95,9 @@
 <script>
     // Choropleth
     var countyCovidData = <%- JSON.stringify(counties); %>
-
-    console.log(countyCovidData);
-
     var state = <%- JSON.stringify(stateName); %>
+    var stateId = <%- JSON.stringify(stateFips); %>
+
     var stateConf = <%- JSON.stringify(stateConfirmed); %>
     var statePop = <%- JSON.stringify(statePopulation); %>
     var stateDeaths = <%- JSON.stringify(stateDeaths); %>

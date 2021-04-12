@@ -178,11 +178,13 @@ app.use('/graph2', (req, res) => {
 
 // state-specific page
 app.use('/state', (req, res) => {
-  let name = req.query.name
+  let name = req.query.name;
+  let id = req.query.id;
   let state = stateDataMostRecent[name];
 
   res.render('stateViz', {counties: countyDataMostRecent,
                             stateName: name,
+                            stateFips: id,
                             stateConfirmed:state.confirmed,
                             statePopulation:state.population,
                             stateDeaths: state.deaths,

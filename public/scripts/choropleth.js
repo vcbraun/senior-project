@@ -70,7 +70,7 @@ let tooltipConfirmed = d3.select('#absoluteCases');
 let tooltipPercentageConfirmed = d3.select('#percentageCases');
 let tooltipDeaths = d3.select('#absoluteDeaths');
 let tooltipPercentageDeaths = d3.select('#percentageDeaths');
-
+let legendMaxLabel = d3.select('#legendMaxLabel');
 
 // Calculate US aggregate data
 let usPop = 0,
@@ -104,40 +104,46 @@ for (state in stateCovidData)
 console.log("max conf" + maxConfirmedPercent);
 console.log("max deaths" + maxDeathsPercent);
 
+legendMaxLabel.text((100 * maxConfirmedPercent).toFixed(2) + "%");
+
 usPercentConfirmed = 100 * usConfirmed / usPop;
 usPercentDeaths = 100 * usDeaths / usPop;
 
 // Display data in tooltip
-tooltipConfirmed.text("Absolute: " + usConfirmed);
+tooltipConfirmed.text("Absolute: " + usConfirmed.toLocaleString());
 tooltipPercentageConfirmed.text("% of Population: " + usPercentConfirmed.toFixed(2));
-tooltipPopulation.text("Population: " + usPop);
-tooltipDeaths.text("Absolute: " + usDeaths);
+tooltipPopulation.text("Population: " + usPop.toLocaleString());
+tooltipDeaths.text("Absolute: " + usDeaths.toLocaleString());
 tooltipPercentageDeaths.text("% of Population:" + usPercentDeaths.toFixed(2));
 
 // Create the legend
-// let legend = d3.select('#choroplethLegend');
-// let defs = legend.append('defs');
+let legend = d3.select('#choroplethLegend');
+let defs = legend.append('defs');
 
-// let linearGradient = defs.append('linearGradient')
-//                          .attr('id', 'linear-gradient');
+// Define gradient for confirmed
+let confirmedGradient = defs.append('linearGradient')
+                         .attr('id', 'confirmed-gradient');
 
-// linearGradient.attr('x1', '0%')
-//               .attr('y1', '0%')
-//               .attr('x2', '100%')
-//               .attr('y2', '0%');
+confirmedGradient.attr('x1', '0%')
+              .attr('y1', '0%')
+              .attr('x2', '100%')
+              .attr('y2', '0%');
 
-// linearGradient.append('stop')
-//               .attr('offset', '0%')
-//               .attr('stop-color', 'whitesmoke');
+confirmedGradient.append('stop')
+              .attr('id', 'minValue')
+              .attr('offset', '0%')
+              .attr('stop-color', 'whitesmoke');
 
-// linearGradient.append('stop')
-//               .attr('offset', '100%')
-//               .attr('stop-color', 'rgba(138, 29, 74, 1)');
+confirmedGradient.append('stop')
+              .attr('id', 'maxValue')
+              .attr('offset', '100%')
+              .attr('stop-color', 'rgba(138, 29, 74, 1)');
 
-// legend.append('rect')
-//       .attr('width', 300)
-//       .attr('height', 20)
-//       .style('fill', 'url(#linear-gradient)');
+legend.append('rect')
+              .attr('id', 'legendGradient')
+              .attr('width', 300)
+              .attr('height', 20)
+              .style('fill', 'url(#confirmed-gradient)');
 
 // Draw the choropleth
 function drawStateMap(){
@@ -193,27 +199,27 @@ function drawStateMap(){
                 let percentageDeaths = 100 * state.deaths / state.population;
 
                 tooltipName.text(stateFips[id]);
-                tooltipPopulation.text("Population: " + state.population);
+                tooltipPopulation.text("Population: " + state.population.toLocaleString());
 
-                tooltipConfirmed.text("Absolute: " + state.confirmed);
+                tooltipConfirmed.text("Absolute: " + state.confirmed.toLocaleString());
                 tooltipPercentageConfirmed.text("% of Population: " + percentageConfirmed.toFixed(2));
 
-                tooltipDeaths.text("Absolute: " + state.deaths);
+                tooltipDeaths.text("Absolute: " + state.deaths.toLocaleString());
                 tooltipPercentageDeaths.text("% of Population: " + percentageDeaths.toFixed(2));
             })
             .on('mouseout', (countyDataItem) => {
                 tooltipName.text('United States');
-                tooltipPopulation.text("Population: " + usPop);
+                tooltipPopulation.text("Population: " + usPop).toLocaleString();
 
-                tooltipConfirmed.text("Absolute: " + usConfirmed);
+                tooltipConfirmed.text("Absolute: " + usConfirmed.toLocaleString());
                 tooltipPercentageConfirmed.text("% of Population: " + usPercentConfirmed.toFixed(2));
 
-                tooltipDeaths.text("Absolute: " + usDeaths);
-                tooltipPercentageDeaths.text("% of Population:" + usPercentDeaths.toFixed(2));
+                tooltipDeaths.text("Absolute: " + usDeaths.toLocaleString());
+                tooltipPercentageDeaths.text("% of Population: " + usPercentDeaths.toFixed(2));
             })
             .on('click', (stateDataItem) => {
                 let id = stateDataItem['id'];
-                window.location.href = 'state?name=' + stateFips[id];
+                window.location.href = 'state?name=' + stateFips[id] + '&id=' + id;
             })
 }
 
@@ -227,18 +233,22 @@ function recolorMap(stat)
                 {
                     if (stat == "deaths")
                     {
+                        legendMaxLabel.text((100 * maxDeathsPercent).toFixed(2) + "%");
                         percentage = stateCovidData[stateFips[id]].deaths / 
                                         stateCovidData[stateFips[id]].population;
                         
                         document.getElementById("statsHeader").style.backgroundColor = "rgb(48, 72, 150)";
+                        d3.select('#maxValue').attr('stop-color', 'rgb(48, 72, 150)');
                         return "rgba(48, 72, 150, " + percentage/maxDeathsPercent + ")";
                     }
                     else
                     {
+                        legendMaxLabel.text((100 * maxConfirmedPercent).toFixed(2) + "%");
                         percentage = stateCovidData[stateFips[id]].confirmed / 
                                         stateCovidData[stateFips[id]].population;
 
                         document.getElementById("statsHeader").style.backgroundColor = 'rgb(138, 29, 74)';
+                        d3.select('#maxValue').attr('stop-color', 'rgb(138, 29, 74)');
                         return "rgba(138, 29, 74, " + percentage / maxConfirmedPercent + ")";
                     }
                 }

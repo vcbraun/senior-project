@@ -68,3 +68,11 @@ h2 {
 #legend {
     margin: 0 auto;
 }
+
+#legendMinLabel, #legendMaxLabel{
+    display: inline-block;
+}
+
+#legendMaxLabel {
+    float: right;
+}
