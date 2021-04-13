@@ -21,7 +21,7 @@ h2 {
 
 #choroplethContainer {
     width: 1400px;
-    margin: auto;
+    margin: 20px auto;
 }
 
 .flexContainer {
@@ -60,8 +60,19 @@ h2 {
 
 #countryPleth, #statePleth {
     min-width: 1000px;
-    min-height: 600px;
+    min-height: 700px;
     padding: 1em 2em;
     background-color: whitesmoke;
 }
 
+#legend {
+    margin: 0 auto;
+}
+
+#legendMinLabel, #legendMaxLabel{
+    display: inline-block;
+}
+
+#legendMaxLabel {
+    float: right;
+}

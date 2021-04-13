@@ -54,6 +54,8 @@ const client = new MongoClient(uri, {
         if (!(doc.fips in countyDataMostRecent)) {
           countyDataMostRecent[doc.fips] = {};
           countyDataMostRecent[doc.fips].name = doc.county;
+          countyDataMostRecent[doc.fips].state = doc.state;
+          countyDataMostRecent[doc.fips].date = doc.date;
           countyDataMostRecent[doc.fips].confirmed = doc.confirmed;
           countyDataMostRecent[doc.fips].population = doc.population;
           countyDataMostRecent[doc.fips].deaths = doc.deaths;
@@ -63,6 +65,7 @@ const client = new MongoClient(uri, {
             if (!(doc.state in stateDataMostRecent)) {
                 stateDataMostRecent[doc.state] = {}
 
+                stateDataMostRecent[doc.state].date = doc.date;
                 stateDataMostRecent[doc.state].population = doc.population;
                 stateDataMostRecent[doc.state].confirmed = doc.confirmed;
                 stateDataMostRecent[doc.state].deaths = doc.deaths;
@@ -175,11 +178,13 @@ app.use('/graph2', (req, res) => {
 
 // state-specific page
 app.use('/state', (req, res) => {
-  let name = req.query.name
+  let name = req.query.name;
+  let id = req.query.id;
   let state = stateDataMostRecent[name];
 
   res.render('stateViz', {counties: countyDataMostRecent,
                             stateName: name,
+                            stateFips: id,
                             stateConfirmed:state.confirmed,
                             statePopulation:state.population,
                             stateDeaths: state.deaths,

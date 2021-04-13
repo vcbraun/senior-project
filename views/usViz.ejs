@@ -24,10 +24,7 @@
 
     <!-- Choropleth -->
     <div id="choroplethContainer">
-        <h2 id='title'>Percentage of Confirmed Covid Cases per State</h2>
-        <h3> Darker = More Cases</h3>
-        <h4> Click on a state to see a map of counties in that state.</h4>
-
+        <h1>Choropleth Map of the US</h1>
         <div class='flexContainer'>
             <div id='tooltip' class='flexChild'>
                 <div id="statsHeader">
@@ -60,10 +57,15 @@
                         </label>
                     </form>
                 </div>
+
             </div>
 
-            <svg id='countryPleth' class='flexChild'> </svg>
+            <svg id='countryPleth' class='flexChild'> 
+            </svg>
         </div>
+        <svg viewBox="0 0 300 5" id='choroplethLegend'></svg>
+        <div id='legendMinLabel'>0%</div>
+        <div id='legendMaxLabel'>10%</div>
     </div>
 
     <!-- Line Graph -->
