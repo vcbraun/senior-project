@@ -15,12 +15,40 @@
   <h2><center id = "heading"></center></h2>
   <!-- To display the data's date -->
   <div id="one"><h3><center id ="b1"></center></h3></div>
+  <h4><center>Death Percent = Number of Deaths/ Number of Cases, Cases Percent = Number of Cases/ Population</center></h4>
+  <div class="allforms">
+  <form>
+      <h4>Show:</h4>
+
+      <label>
+          Absolute
+      <input type="radio" value="absolute" name="bar" onclick="percentAb(this.value)" checked>
+      </label>
+
+      <label>
+          Percent
+      <input type="radio" value="percent" name="bar" onclick="percentAb(this.value)">
+      </label>
+  </form>
+  <form>
+      <h4>Show:</h4>
+
+      <label>
+          Cases
+      <input type="radio" value="cases" name="bardisplay" onclick="formdisplay(this.value)" checked>
+      </label>
+
+      <label>
+          Deaths
+      <input type="radio" value="deaths" name="bardisplay" onclick="formdisplay(this.value)">
+      </label>
+  </form>
+  </div>
   <!-- Create a div where the graph will be -->
   <div id="chart"></div>
 </div>
   <script>
   //Initializing an accessible dictionary
-  var conData = <%- JSON.stringify(dict.con); %>
   var totRecentData = <%- JSON.stringify(dict.tot); %>
   </script>
   <script defer src="/scripts/barchart.js"></script>

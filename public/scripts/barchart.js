@@ -1,116 +1,146 @@
-//getting keys of the dictionary (i.e.- dates)
-var ckey = Object.keys(conData);
-//grabbing the first and last dates available in the dataset
-var date = ckey[0];
-//grabbing the data of the latest date
-var dat = conData[date];
-//to transform the data into a form that works for d3 bar chart
 var confirmedData = [];
 var deathData = [];
-for (var key in dat) {
-  if (dat.hasOwnProperty(key)) {
-      var objCon = {};
-      objCon["State"] = key;
-      objCon["Value"] = dat[key];
-      confirmedData.push(objCon);
-  }
-}
+var percentCon = [];
+var percentDeath = [];
 
 for (var key in totRecentData) {
   if (totRecentData.hasOwnProperty(key)) {
       var objDeath = {};
+      var objCon = {};
+      var objCPer = {};
+      var objDPer = {};
       objDeath["State"] = key;
+      objCon["State"] = key;
+      objCPer["State"] = key;
+      objDPer["State"] = key;
       var stateD = totRecentData[key];
+      var deathPer = ((stateD.deaths/stateD.population)*100);
+      var confirmPer = ((stateD.confirmed/stateD.population)*100);
       objDeath["Value"] = stateD.deaths;
+      objCon["Value"] = stateD.confirmed;
+      objDPer["Value"] = deathPer;
+      objCPer["Value"] = confirmPer;
+      confirmedData.push(objCon);
       deathData.push(objDeath);
+      percentCon.push(objCPer);
+      percentDeath.push(objDPer);
   }
 }
-window.onload = function(){
-  document.getElementById('b1').innerHTML = date;
-  };
-var d = confirmedData;
+// window.onload = function(){
+//   document.getElementById('b1').innerHTML = date;
+//   };
+var d = "confirmedData";
+var perabs ="absolute";
 var s1 = JSON.parse(JSON.stringify(confirmedData));
 var s2 = JSON.parse(JSON.stringify(deathData));
-// var v1 = JSON.parse(JSON.stringify(confirmedData));
-// var v2 = JSON.parse(JSON.stringify(deathData));
+var s3 = JSON.parse(JSON.stringify(percentCon));
+var s4 = JSON.parse(JSON.stringify(percentDeath));
 
-// s1.sort(function (a, b) {
-// return a.State.localeCompare(b.State);
-// });
-// s2.sort(function (a, b) {
-// return a.State.localeCompare(b.State);
-// });
-//
-// s1.sort(function (a, b) {
-// return a.Value.localeCompare(b.Value);
-// });
-// v2.sort(function (a, b) {
-// return a.Value.localeCompare(b.Value);
-// });
-// Creating Buttons
-var confirmbtn = document.createElement("button");
-var deathbtn = document.createElement("button");
 var ascendingS = document.createElement("button");
 var ascendingV = document.createElement("button");
 
-confirmbtn.setAttribute("class","bigbtn");
-deathbtn.setAttribute("class","bigbtn");
 ascendingS.setAttribute("class","smallbtn");
 ascendingV.setAttribute("class","smallbtn");
 
-confirmbtn.innerHTML = "Confirmed Cases";
-deathbtn.innerHTML = "Number of Deaths";
 ascendingS.innerHTML = "Ascending Order: By State";
 ascendingV.innerHTML = "Ascending Order: By Value";
 
 
 // 2. Append to Container
 var graphDiv = document.getElementById("barchartContainer")
-graphDiv.appendChild(confirmbtn);
-graphDiv.appendChild(deathbtn);
 graphDiv.appendChild(ascendingS);
 graphDiv.appendChild(ascendingV);
 
 // 3. Add event handlers
-confirmbtn.addEventListener ("click", function() {
-  document.getElementById('heading').innerHTML = "Confirmed Cases";
-  d = confirmedData;
-  update(d);
-});
-
-deathbtn.addEventListener ("click", function() {
-  document.getElementById('heading').innerHTML = "Number of Deaths";
-  d = deathData;
-  update(d);
-});
-
-ascendingS.addEventListener ("click", function() {
-  if(d == confirmedData){
-    s1.sort(function (a, b) {
-    return a.State.localeCompare(b.State);
-    });
-    update(s1);
+function percentAb(val){
+  perabs = val;
+  if(val == "absolute"){
+    if(d == "confirmedData"){
+      update(confirmedData);
+    }
+    else{
+      update(deathData);
+    }
   }
   else{
-    s2.sort(function (a, b) {
-    return a.State.localeCompare(b.State);
-    });
-    update(s2);
+    if(d == "confirmedData"){
+      update(percentCon);
+    }
+    else{
+      update(percentDeath);
+    }
+  }
+}
+function formdisplay(val){
+  if(val == "cases"){
+    document.getElementById('heading').innerHTML = "Confirmed Cases";
+    d = "confirmedData";
+    if(perabs == "absolute"){
+      update(confirmedData);
+    }
+    else{
+      update(percentCon);
+    }
+  }
+  else{
+    document.getElementById('heading').innerHTML = "Deaths";
+    d = "deathData";
+    if(perabs == "absolute"){
+      update(deathData);
+    }
+    else{
+      update(percentDeath);
+    }
+  }
+}
+function sortandupdatebyState(dat){
+  dat.sort(function (a, b) {
+  return a.State.localeCompare(b.State);
+  });
+  update(dat);
+}
+
+function sortandupdatebyValue(dat){
+  dat.sort(function (a, b) {
+  return parseFloat(a.Value) - parseFloat(b.Value);
+  });
+  update(dat);
+}
+ascendingS.addEventListener ("click", function() {
+  if(d == "confirmedData"){
+    if(perabs == "absolute"){
+      sortandupdatebyState(s1);
+    }
+    else{
+      sortandupdatebyState(s3);
+    }
+  }
+  else{
+    if(perabs == "absolute"){
+      sortandupdatebyState(s2);
+    }
+    else{
+      sortandupdatebyState(s4);
+    }
   }
 });
 
 ascendingV.addEventListener ("click", function() {
-  if(d == confirmedData){
-    s1.sort(function(a, b) {
-    return parseFloat(a.Value) - parseFloat(b.Value);
-    });
-    update(s1);
+  if(d == "confirmedData"){
+    if(perabs == "absolute"){
+      sortandupdatebyValue(s1);
+    }
+    else{
+      sortandupdatebyValue(s3);
+    }
   }
   else{
-    s2.sort(function(a, b) {
-    return parseFloat(a.Value) - parseFloat(b.Value);
-    });
-    update(s2);
+    if(perabs == "absolute"){
+      sortandupdatebyValue(s2);
+    }
+    else{
+      sortandupdatebyValue(s4);
+    }
   }
 });
 
@@ -178,7 +208,7 @@ function update(data) {
        .duration(200)
        .style("opacity", 1);
 
-       tooltipDiv.html(d.State + '<hr/>' + d.Value)
+       tooltipDiv.html(d.State + '<hr/>' + d.Value.toFixed(4))
        .style("left", d3.event.pageX - 50 + "px")
        .style("top", d3.event.pageY - 70 + "px")
 
