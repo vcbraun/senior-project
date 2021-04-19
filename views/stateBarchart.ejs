@@ -35,12 +35,12 @@
 
       <label>
           Cases
-      <input type="radio" value="Cases" name="bardisplay" onclick="formdisplay(this.value)" checked>
+      <input type="radio" value="cases" name="bardisplay" onclick="formdisplay(this.value)" checked>
       </label>
 
       <label>
           Deaths
-      <input type="radio" value="Deaths" name="bardisplay" onclick="formdisplay(this.value)">
+      <input type="radio" value="deaths" name="bardisplay" onclick="formdisplay(this.value)">
       </label>
   </form>
   </div>
@@ -49,8 +49,8 @@
 </div>
   <script>
   //Initializing an accessible dictionary
-  var totRecentData = <%- JSON.stringify(dict.tot); %>
+  var totCountyData = <%- JSON.stringify(dict.tot); %>
   </script>
-  <script defer src="/scripts/barchart.js"></script>
+  <script defer src="/scripts/stateBarchart.js"></script>
 </body>
 </html>

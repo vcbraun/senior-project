@@ -60,7 +60,7 @@
 
             </div>
 
-            <svg id='countryPleth' class='flexChild'> 
+            <svg id='countryPleth' class='flexChild'>
             </svg>
         </div>
         <svg viewBox="0 0 300 5" id='choroplethLegend'></svg>
@@ -80,13 +80,40 @@
 
     <!-- Bar Chart -->
     <div id="barchartContainer">
-        <h2><center id = "heading"></center></h2>
+      <h2><center id = "heading"></center></h2>
+      <!-- To display the data's date -->
+      <div id="one"><h3><center id ="b1"></center></h3></div>
+      <h4><center>Death Percent = Number of Deaths/ Number of Cases, Cases Percent = Number of Cases/ Population</center></h4>
+      <div class="allforms">
+      <form>
+          <h4>Show:</h4>
 
-        <!-- To display the data's date -->
-        <div id="one"><h3><center id ="b1"></center></h3></div>
+          <label>
+              Absolute
+          <input type="radio" value="absolute" name="bar" onclick="percentAb(this.value)" checked>
+          </label>
 
-        <!-- Create a div where the graph will be -->
-        <div id="chart"></div>
+          <label>
+              Percent
+          <input type="radio" value="percent" name="bar" onclick="percentAb(this.value)">
+          </label>
+      </form>
+      <form>
+          <h4>Show:</h4>
+
+          <label>
+              Cases
+          <input type="radio" value="Cases" name="bardisplay" onclick="formdisplay(this.value)" checked>
+          </label>
+
+          <label>
+              Deaths
+          <input type="radio" value="Deaths" name="bardisplay" onclick="formdisplay(this.value)">
+          </label>
+      </form>
+      </div>
+      <!-- Create a div where the graph will be -->
+      <div id="chart"></div>
     </div>
   <br>
 </body>

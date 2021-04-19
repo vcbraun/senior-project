@@ -13,14 +13,15 @@
     <!-- topojson support -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js" integrity="sha512-4UKI/XKm3xrvJ6pZS5oTRvIQGIzZFoXR71rRBb1y2N+PbwAsKa5tPl2J6WvbEvwN3TxQCm8hMzsl/pO+82iRlg==" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" type="text/css" href="/css/choropleth.css" /> 
+    <link rel="stylesheet" type="text/css" href="/css/choropleth.css" />
     <link rel="stylesheet" type="text/css" href="/css/line.css" />
-    <link rel="stylesheet" type="text/css" href="/css/navbar.css" />   
+    <link rel="stylesheet" type="text/css" href="/css/barchart.css" />
+    <link rel="stylesheet" type="text/css" href="/css/navbar.css" />
 </head>
 
 <body>
     <%- include('partials/navbar') %>
-    
+
     <!-- Choropleth -->
     <div id="choroplethContainer">
         <h2 id='title'>Percentage of Confirmed Covid Cases per State</h2>
@@ -33,7 +34,7 @@
                     <h3 id='stateName'><%- stateName %></h3>
                 <h4 id='population'>Population: </h4>
                 </div>
-                
+
                 <div id='statsContainer'>
                     <h3>Confirmed Cases</h3>
                     <h4 id='percentageCases'>% of Population: </h4>
@@ -47,26 +48,26 @@
                     <br>
                     <form>
                         <h4>Color map by:</h4>
-                        
+
                         <label>
                             Cases
                         <input type="radio" value="cases" name="coloring" checked>
                         </label>
-    
+
                         <label>
                             Deaths
                         <input type="radio" value="deaths" name="coloring">
                         </label>
                     </form>
-                </div> 
+                </div>
             </div>
-            
+
             <svg id='statePleth' class='flexChild'> </svg>
         </div>
         <svg viewBox="0 0 300 5" id='choroplethLegend'></svg>
         <div id='legendMinLabel'>0%</div>
         <div id='legendMaxLabel'>10%</div>
-    </div> 
+    </div>
 
     <!-- Line Graph -->
     <div id="linegraphContainer">
@@ -80,17 +81,45 @@
 
     <!-- Bar Chart -->
     <div id="barchartContainer">
-        <h2><center>Confirmed Cases</center></h2>
+      <div id="countyState"><h2><center id = "stateCounty"></center></h2></div>
+      <h3><center id = "heading"></center></h3>
+      <!-- To display the data's date -->
+      <div id="one"><h3><center id ="b1"></center></h3></div>
+      <h4><center>Death Percent = Number of Deaths/ Number of Cases, Cases Percent = Number of Cases/ Population</center></h4>
+      <div class="allforms">
+      <form>
+          <h4>Show:</h4>
 
-        <!-- To display the data's date -->
-        <div id="one"><h3><center id ="b1"></center></h3></div>
+          <label>
+              Absolute
+          <input type="radio" value="absolute" name="bar" onclick="percentAb(this.value)" checked>
+          </label>
 
-        <!-- Create a div where the graph will be -->
-        <div id="chart"></div>
+          <label>
+              Percent
+          <input type="radio" value="percent" name="bar" onclick="percentAb(this.value)">
+          </label>
+      </form>
+      <form>
+          <h4>Show:</h4>
+
+          <label>
+              Cases
+          <input type="radio" value="Cases" name="bardisplay" onclick="formdisplay(this.value)" checked>
+          </label>
+
+          <label>
+              Deaths
+          <input type="radio" value="Deaths" name="bardisplay" onclick="formdisplay(this.value)">
+          </label>
+      </form>
+      </div>
+      <!-- Create a div where the graph will be -->
+      <div id="chart"></div>
     </div>
 
 </body>
- 
+
 
 <script>
     // Choropleth
@@ -112,6 +141,6 @@
 
 <script defer src="/scripts/stateChoropleth.js"></script>
 <script defer src="/scripts/linegraph.js"></script>
-<script defer src="/scripts/barchart.js"></script>
+<script defer src="/scripts/stateBarchart.js"></script>
 
 </html>

@@ -4,28 +4,36 @@ var percentCon = [];
 var percentDeath = [];
 var date;
 
-for (var key in totRecentData) {
-  if (totRecentData.hasOwnProperty(key)) {
+document.getElementById('stateCounty').innerHTML = state;
+
+for (var key in countyCovidData) {
+  if (countyCovidData.hasOwnProperty(key)) {
       var objDeath = {};
       var objCon = {};
       var objCPer = {};
       var objDPer = {};
-      objDeath["State"] = key;
-      objCon["State"] = key;
-      objCPer["State"] = key;
-      objDPer["State"] = key;
-      var stateD = totRecentData[key];
-      date = stateD.date
-      var deathPer = ((stateD.deaths/stateD.population)*100);
-      var confirmPer = ((stateD.confirmed/stateD.population)*100);
-      objDeath["Value"] = stateD.deaths;
-      objCon["Value"] = stateD.confirmed;
-      objDPer["Value"] = deathPer;
-      objCPer["Value"] = confirmPer;
-      confirmedData.push(objCon);
-      deathData.push(objDeath);
-      percentCon.push(objCPer);
-      percentDeath.push(objDPer);
+      var countyD = countyCovidData[key];
+      if (state === countyD.state){
+        objDeath["County"] = countyD.name;
+        objCon["County"] = countyD.name;
+        objCPer["County"] = countyD.name;
+        objDPer["County"] = countyD.name;
+        date = countyD.date
+        if (typeof countyD.population !== 'undefined' && countyD.population !== 0){
+          var deathPer = ((countyD.deaths/countyD.population)*100);
+          var confirmPer = ((countyD.confirmed/countyD.population)*100);
+          objDPer["Value"] = deathPer;
+          objCPer["Value"] = confirmPer;
+          percentCon.push(objCPer);
+          percentDeath.push(objDPer);
+        }
+
+        objDeath["Value"] = countyD.deaths;
+        objCon["Value"] = countyD.confirmed;
+
+        confirmedData.push(objCon);
+        deathData.push(objDeath);
+      }
   }
 }
 window.onload = function(){
@@ -44,7 +52,7 @@ var ascendingV = document.createElement("button");
 ascendingS.setAttribute("class","smallbtn");
 ascendingV.setAttribute("class","smallbtn");
 
-ascendingS.innerHTML = "Ascending Order: By State";
+ascendingS.innerHTML = "Ascending Order: By County";
 ascendingV.innerHTML = "Ascending Order: By Value";
 
 
@@ -95,9 +103,9 @@ function formdisplay(val){
     }
   }
 }
-function sortandupdatebyState(dat){
+function sortandupdatebyCounty(dat){
   dat.sort(function (a, b) {
-  return a.State.localeCompare(b.State);
+  return a.County.localeCompare(b.County);
   });
   update(dat);
 }
@@ -111,18 +119,18 @@ function sortandupdatebyValue(dat){
 ascendingS.addEventListener ("click", function() {
   if(d == "confirmedData"){
     if(perabs == "absolute"){
-      sortandupdatebyState(s1);
+      sortandupdatebyCounty(s1);
     }
     else{
-      sortandupdatebyState(s3);
+      sortandupdatebyCounty(s3);
     }
   }
   else{
     if(perabs == "absolute"){
-      sortandupdatebyState(s2);
+      sortandupdatebyCounty(s2);
     }
     else{
-      sortandupdatebyState(s4);
+      sortandupdatebyCounty(s4);
     }
   }
 });
@@ -189,10 +197,10 @@ var yAxis = svg.append("g")
 function update(data) {
 
   // Update the X axis
-  x.domain(data.map(function(d) { return d.State; }))
+  x.domain(data.map(function(d) { return d.County; }))
   xAxis.call(d3.axisBottom(x))
   .selectAll("text")
-    .attr("transform", "translate(-10,0)rotate(-28)")
+    .attr("transform", "translate(-10,0)rotate(-35)")
     .style("text-anchor", "end");
 
   // Update the Y axis
@@ -211,12 +219,12 @@ function update(data) {
        .style("opacity", 1);
 
     if (perabs == "absolute"){
-      tooltipDiv.html(d.State + '<hr/>' + d.Value.toFixed(4))
+      tooltipDiv.html(d.County + '<hr/>' + d.Value.toFixed(4))
       .style("left", d3.event.pageX - 50 + "px")
       .style("top", d3.event.pageY - 70 + "px")
     }
     else{
-      tooltipDiv.html(d.State + '<hr/>' + d.Value.toFixed(4) + "%")
+      tooltipDiv.html(d.County + '<hr/>' + d.Value.toFixed(4) + "%")
       .style("left", d3.event.pageX - 50 + "px")
       .style("top", d3.event.pageY - 70 + "px")
     }
@@ -244,7 +252,7 @@ function onMouseOut(d){
     .merge(u) // get the already existing elements as well
     .transition() // and apply changes to all of them
     .duration(1000)
-      .attr("x", function(d) { return x(d.State); })
+      .attr("x", function(d) { return x(d.County); })
       .attr("y", function(d) { return y(d.Value); })
       .attr("width", x.bandwidth())
       .attr("height", function(d) { return height - y(d.Value); })

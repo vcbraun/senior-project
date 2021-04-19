@@ -76,3 +76,13 @@ div.allforms{
   position: relative;
   left: 10px;
 }
+
+#chart {
+  display: table;
+  margin: 0 auto;
+}
+
+#barchartContainer{
+  display: table;
+  margin: 0 auto;
+}
