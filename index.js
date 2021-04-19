@@ -161,7 +161,7 @@ app.use('/graph', (req, res) => {
 });
 
 app.use('/barchart', (req, res) => {
-  res.render('barchart', {dict: {con: stateCon, tot: stateDataMostRecent}});
+  res.render('barchart', {dict: {tot: stateDataMostRecent}});
 });
 
 app.use('/line', (req, res) => {
