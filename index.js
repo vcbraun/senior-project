@@ -28,14 +28,9 @@ const client = new MongoClient(uri, {
     useUnifiedTopology: true,
   });
   // ---------------------- Load Data into usData -----------------------------
-  var usData = [];
-
   var stateDataMostRecent = {};
   var countyDataMostRecent = {};
 
-  var stateCon = {};
-  var stateDeath = {};
-  var statePop = {};
   var dateconfirm = {};
   var datedeath = {};
 
@@ -49,8 +44,6 @@ const client = new MongoClient(uri, {
 
     // push the data objects into the results array
     data.forEach((doc, err) => {
-        usData.push(doc);
-
         if (!(doc.fips in countyDataMostRecent)) {
           countyDataMostRecent[doc.fips] = {};
           countyDataMostRecent[doc.fips].name = doc.county;
@@ -86,45 +79,6 @@ const client = new MongoClient(uri, {
           dateconfirm[doc.date] = doc.confirmed;
           datedeath[doc.date] = doc.deaths;
         }
-
-          var date = doc.date;
-          var stateN = doc.state;
-          var confirmed = doc.confirmed;
-          var death = doc.death;
-          var pop = doc.population;
-
-          if(date in stateCon){
-            var statesL = stateCon[date];
-            if(stateN in statesL){
-              var numConfirmed = statesL[stateN];
-              var numDeath = stateDeath[date][stateN];
-              var numPop = statePop[date][stateN];
-
-              stateCon[date][stateN] = numConfirmed + confirmed;
-              stateDeath[date][stateN] = numDeath + death;
-
-              if (pop != null)
-                statePop[date][stateN] = numPop + pop;
-            }
-            else{
-              stateCon[date][stateN] = confirmed;
-              stateDeath[date][stateN] = death;
-
-              if (pop != null)
-                statePop[date][stateN] = pop;
-            }
-          }
-          else{
-            stateCon[date] = {};
-            stateDeath[date] = {};
-            statePop[date] = {};
-
-            stateCon[date][stateN] = confirmed;
-            stateDeath[date][stateN] = death;
-            if (pop != null)
-              statePop[date][stateN] = pop;
-          }
-
 
     }, () => {
         client.close();
@@ -188,7 +142,6 @@ app.use('/state', (req, res) => {
                             stateConfirmed:state.confirmed,
                             statePopulation:state.population,
                             stateDeaths: state.deaths,
-                            dict: stateCon,
                             data: {itemsc: dateconfirm,
                                     itemsd: datedeath}});
 })
@@ -198,7 +151,6 @@ app.use('/', (req, res) => {
 
 
   res.render('usViz', { states: stateDataMostRecent,
-                        dict: {con: stateCon, tot: stateDataMostRecent},
                         data: {itemsc: dateconfirm,
                                 itemsd: datedeath}});
 })

@@ -130,13 +130,11 @@
     var stateConf = <%- JSON.stringify(stateConfirmed); %>
     var statePop = <%- JSON.stringify(statePopulation); %>
     var stateDeaths = <%- JSON.stringify(stateDeaths); %>
+    
     // Line Graph
     var dataconfirm = <%- JSON.stringify(data.itemsc); %>;
     var datadeath = <%- JSON.stringify(data.itemsd); %>;
 
-    // Bar Chart
-    //Initializing an accessible dictionary
-    var dataCopy = <%- JSON.stringify(dict); %>
 </script>
 
 <script defer src="/scripts/stateChoropleth.js"></script>
