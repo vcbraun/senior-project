@@ -1,27 +1,7 @@
-html, body {
-    min-height: 100%;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-h1 {
-    font-size: 30px;
-    height: 2em;
-    line-height: 2em;
-    text-align: center;
-}
-
-h2 {
-    margin-top: 2em;
-}
-
-#choroplethContainer {
-    width: 1400px;
-    margin: 20px auto;
+#choroplethCard {
+    width: 80vw;
+    margin: 0 auto;
+    padding: 2em;
 }
 
 .flexContainer {
@@ -60,9 +40,10 @@ h2 {
 
 #countryPleth, #statePleth {
     min-width: 1000px;
-    min-height: 700px;
+    max-width: 1vw;
+    min-height: 600px;
     padding: 1em 2em;
-    background-color: whitesmoke;
+    background-color: white;
 }
 
 #legend {

@@ -1,41 +1,61 @@
-body {
-    background-color: #ddd;
-    font-family: Arial, Helvetica, sans-serif;
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100%;
+    font-family: 'Noto Serif', serif;
 }
 
 .container {
-    width: 100%;
     height: 100vh;
+}
+
+.card {
+    margin: 0 auto;
+    padding: 40px;
+    min-width:60vw;
+}
+
+#titleCard {
+    background-color: aliceblue;
+}
+
+#jumbotron {
+    height: 40vh;
+    background-color: rgb(167, 178, 190);
+    padding: 30vh 0;
     text-align: center;
-    margin-top: 10px;
 }
 
-h1 {
-    padding: 1em;
+#choroplethContainer {
+    background-color: aliceblue;
 }
 
-#pagelinks{
-    list-style-type: none;
+#linegraphContainer {
+    background-color: rgb(167, 178, 190);
+    padding: 5vh;
 }
 
-#pagelinks li {
+#my_dataviz {
+    background-color: white;
+}
+
+#bargraphContainer
+{
+    background-color: aliceblue;
+}
+
+#tagline {
+    font-family: 'Noto Serif', serif;
+    font-size: 1.5em;
+    margin-bottom: 1em;
+}
+
+.displayHeader {
+    font-family: 'Oswald', sans-serif;
+    font-size: 4em;
+}
+
+.allforms form{
     display: inline-block;
+    margin: 0.5em 1em;
 }
-
-#pagelinks li a {
-    display: inline-block;
-    width: 400px;
-    height:400px;
-    margin: 5px auto;
-    background-color: #333;
-    line-height: 400px;
-
-    color: #ddd;
-    font-size: 2em;
-    text-decoration: none;
-}
-
-#pagelinks li a:hover {
-    background-color: #111;
-}
-

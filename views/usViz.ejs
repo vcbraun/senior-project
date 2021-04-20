@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Choropleth Map</title>
+    <title>CoViz</title>
 
     <!-- d3.js libraries -->
     <script src="https://d3js.org/d3.v5.js"></script>
@@ -13,6 +13,11 @@
     <!-- topojson support -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js" integrity="sha512-4UKI/XKm3xrvJ6pZS5oTRvIQGIzZFoXR71rRBb1y2N+PbwAsKa5tPl2J6WvbEvwN3TxQCm8hMzsl/pO+82iRlg==" crossorigin="anonymous"></script>
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif&family=Oswald:wght@500&display=swap" rel="stylesheet"> 
+
+    <link rel="stylesheet" type="text/css" href="/css/index.css" />
     <link rel="stylesheet" type="text/css" href="/css/choropleth.css" />
     <link rel="stylesheet" type="text/css" href="/css/line.css" />
     <link rel="stylesheet" type="text/css" href="/css/navbar.css" />
@@ -22,100 +27,122 @@
 <body>
     <%- include('partials/navbar') %>
 
-    <!-- Choropleth -->
-    <div id="choroplethContainer">
-        <h1>Choropleth Map of the US</h1>
-        <div class='flexContainer'>
-            <div id='tooltip' class='flexChild'>
-                <div id="statsHeader">
-                    <h3 id='stateName'>United States</h3>
-                <h4 id='population'>Population: </h4>
-                </div>
-
-                <div id='statsContainer'>
-                    <h3>Confirmed Cases</h3>
-                    <h4 id='percentageCases'>% of Population: </h4>
-                    <h4 id='absoluteCases'>Absolute Number: </h4>
-
-                    <br>
-                    <h3>Deaths</h3>
-                    <h4 id='percentageDeaths'>% of Population: </h4>
-                    <h4 id='absoluteDeaths'>Absolute Number: </h4>
-
-                    <br>
-                    <form>
-                        <h4>Color map by:</h4>
-
-                        <label>
-                            Cases
-                        <input type="radio" value="cases" name="coloring" checked>
-                        </label>
-
-                        <label>
-                            Deaths
-                        <input type="radio" value="deaths" name="coloring">
-                        </label>
-                    </form>
-                </div>
-
-            </div>
-
-            <svg id='countryPleth' class='flexChild'>
-            </svg>
+    <!-- Jumbotron -->
+    <div id="jumbotron">
+        <div id="titleCard" class="card">
+            <h1 class="displayHeader">Welcome to CoViz</h1>
+            <h2 id="tagline">A web application for exploring COVID-19 data in the US.</h2>
+            <p>Click any of the options below to start exploring the dataset</p>
+            <nav>
+                <ul>
+                    <li><a href="#choroplethContainer">Map</a></li>
+                    <li><a href="#linegraphContainer">Timeline</a></li>
+                    <li><a href="#barchartContainer">Bar Chart</a></li>
+                </ul>
+            </nav>
         </div>
-        <svg viewBox="0 0 300 5" id='choroplethLegend'></svg>
-        <div id='legendMinLabel'>0%</div>
-        <div id='legendMaxLabel'>10%</div>
+    </div>
+
+    <!-- Choropleth -->
+    <div id="choroplethContainer" class="container">
+        <div id="choroplethCard">
+            <h1>Choropleth Map of the US</h1>
+            <p>Hover over the different states to get an overview of the statistics for that state, or click to see more.<br>
+            <div class='flexContainer'>
+                <div id='tooltip' class='flexChild'>
+                    <div id="statsHeader">
+                        <h3 id='stateName'>United States</h3>
+                    <h4 id='population'>Population: </h4>
+                    </div>
+
+                    <div id='statsContainer'>
+                        <h3>Confirmed Cases</h3>
+                        <h4 id='percentageCases'>% of Population: </h4>
+                        <h4 id='absoluteCases'>Absolute Number: </h4>
+
+                        <br>
+                        <h3>Deaths</h3>
+                        <h4 id='percentageDeaths'>% of Population: </h4>
+                        <h4 id='absoluteDeaths'>Absolute Number: </h4>
+
+                        <br>
+                        <form>
+                            <h4>Color map by:</h4>
+
+                            <label>
+                                Cases
+                            <input type="radio" value="cases" name="coloring" checked>
+                            </label>
+
+                            <label>
+                                Deaths
+                            <input type="radio" value="deaths" name="coloring">
+                            </label>
+                        </form>
+                    </div>
+
+                </div>
+
+                <svg id='countryPleth' class='flexChild'>
+                </svg>
+            </div>
+            <svg viewBox="0 0 300 5" id='choroplethLegend'></svg>
+            <div id='legendMinLabel'>0%</div>
+            <div id='legendMaxLabel'>10%</div>
+        </div>
     </div>
 
     <!-- Line Graph -->
-    <div id="linegraphContainer">
-        <h1><center>COVID Data Over Time</center></h1>
+    <div id="linegraphContainer" class="container">
+        <div id="linegraphCard" class="card">
+            <h1>COVID Data Over Time</h1>
+            <!-- Graph Div -->
+            <div id="my_dataviz"></div>
 
-        <!-- Graph Div -->
-        <div id="my_dataviz"></div>
-
-        <button id='confirmbutton'></button>
+            <button id='confirmbutton'></button>
+        </div>
     </div>
 
     <!-- Bar Chart -->
-    <div id="barchartContainer">
-      <h2><center id = "heading"></center></h2>
-      <!-- To display the data's date -->
-      <div id="one"><h3><center id ="b1"></center></h3></div>
-      <h4><center>Death Percent = Number of Deaths/ Number of Cases, Cases Percent = Number of Cases/ Population</center></h4>
-      <div class="allforms">
-      <form>
-          <h4>Show:</h4>
+    <div id="barchartContainer" class="container">
+        <div class="card">
+            <h2 id = "heading"></h2>
+            <!-- To display the data's date -->
+            <div id="one"><h3 id ="b1"></h3></div>
+            <h4>Death Percent = Number of Deaths/ Number of Cases <br>
+                Cases Percent = Number of Cases/ Population</h4>
+            <div class="allforms">
+            <form>
+                <h4>Show:</h4>
 
-          <label>
-              Absolute
-          <input type="radio" value="absolute" name="bar" onclick="percentAb(this.value)" checked>
-          </label>
+                <label>
+                    Absolute
+                <input type="radio" value="absolute" name="bar" onclick="percentAb(this.value)" checked>
+                </label>
 
-          <label>
-              Percent
-          <input type="radio" value="percent" name="bar" onclick="percentAb(this.value)">
-          </label>
-      </form>
-      <form>
-          <h4>Show:</h4>
+                <label>
+                    Percent
+                <input type="radio" value="percent" name="bar" onclick="percentAb(this.value)">
+                </label>
+            </form>
+            <form>
+                <h4>Show:</h4>
 
-          <label>
-              Cases
-          <input type="radio" value="Cases" name="bardisplay" onclick="formdisplay(this.value)" checked>
-          </label>
+                <label>
+                    Cases
+                <input type="radio" value="Cases" name="bardisplay" onclick="formdisplay(this.value)" checked>
+                </label>
 
-          <label>
-              Deaths
-          <input type="radio" value="Deaths" name="bardisplay" onclick="formdisplay(this.value)">
-          </label>
-      </form>
-      </div>
-      <!-- Create a div where the graph will be -->
-      <div id="chart"></div>
-    </div>
-  <br>
+                <label>
+                    Deaths
+                <input type="radio" value="Deaths" name="bardisplay" onclick="formdisplay(this.value)">
+                </label>
+            </form>
+            </div>
+        </div>
+            <!-- Create a div where the graph will be -->
+            <div id="chart"></div>
+        </div>
 </body>
 
 
