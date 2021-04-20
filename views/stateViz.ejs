@@ -13,6 +13,7 @@
     <!-- topojson support -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js" integrity="sha512-4UKI/XKm3xrvJ6pZS5oTRvIQGIzZFoXR71rRBb1y2N+PbwAsKa5tPl2J6WvbEvwN3TxQCm8hMzsl/pO+82iRlg==" crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" type="text/css" href="/css/index.css" />
     <link rel="stylesheet" type="text/css" href="/css/choropleth.css" />
     <link rel="stylesheet" type="text/css" href="/css/line.css" />
     <link rel="stylesheet" type="text/css" href="/css/barchart.css" />
@@ -23,54 +24,52 @@
     <%- include('partials/navbar') %>
 
     <!-- Choropleth -->
-    <div id="choroplethContainer">
-        <h2 id='title'>Percentage of Confirmed Covid Cases per State</h2>
-        <h3> Darker = More Cases</h3>
-        <h4> Click on a state to see a map of counties in that state.</h4>
+    <div id="choroplethContainer" class="container">
+        <div id="choroplethCardCounty">
+            <div class='flexContainer'>
+                <div id='tooltip' class='flexChild'>
+                    <div id="statsHeader">
+                        <h3 id='stateName'><%- stateName %></h3>
+                    <h4 id='population'>Population: </h4>
+                    </div>
 
-        <div class='flexContainer'>
-            <div id='tooltip' class='flexChild'>
-                <div id="statsHeader">
-                    <h3 id='stateName'><%- stateName %></h3>
-                <h4 id='population'>Population: </h4>
+                    <div id='statsContainer'>
+                        <h3>Confirmed Cases</h3>
+                        <h4 id='percentageCases'>% of Population: </h4>
+                        <h4 id='absoluteCases'>Absolute Number: </h4>
+
+                        <br>
+                        <h3>Deaths</h3>
+                        <h4 id='percentageDeaths'>% of Population: </h4>
+                        <h4 id='absoluteDeaths'>Absolute Number: </h4>
+
+                        <br>
+                        <form>
+                            <h4>Color map by:</h4>
+
+                            <label>
+                                Cases
+                            <input type="radio" value="cases" name="coloring" checked>
+                            </label>
+
+                            <label>
+                                Deaths
+                            <input type="radio" value="deaths" name="coloring">
+                            </label>
+                        </form>
+                    </div>
                 </div>
 
-                <div id='statsContainer'>
-                    <h3>Confirmed Cases</h3>
-                    <h4 id='percentageCases'>% of Population: </h4>
-                    <h4 id='absoluteCases'>Absolute Number: </h4>
-
-                    <br>
-                    <h3>Deaths</h3>
-                    <h4 id='percentageDeaths'>% of Population: </h4>
-                    <h4 id='absoluteDeaths'>Absolute Number: </h4>
-
-                    <br>
-                    <form>
-                        <h4>Color map by:</h4>
-
-                        <label>
-                            Cases
-                        <input type="radio" value="cases" name="coloring" checked>
-                        </label>
-
-                        <label>
-                            Deaths
-                        <input type="radio" value="deaths" name="coloring">
-                        </label>
-                    </form>
-                </div>
+                <svg id='statePleth' class='flexChild'> </svg>
             </div>
-
-            <svg id='statePleth' class='flexChild'> </svg>
+            <svg viewBox="0 0 300 5" id='choroplethLegend'></svg>
+            <div id='legendMinLabel'>0%</div>
+            <div id='legendMaxLabel'>10%</div>
         </div>
-        <svg viewBox="0 0 300 5" id='choroplethLegend'></svg>
-        <div id='legendMinLabel'>0%</div>
-        <div id='legendMaxLabel'>10%</div>
     </div>
 
     <!-- Line Graph -->
-    <div id="linegraphContainer">
+    <div id="linegraphContainer" class="container">
         <h1><center>COVID Data Over Time</center></h1>
 
         <!-- Graph Div -->
@@ -80,7 +79,7 @@
     </div>
 
     <!-- Bar Chart -->
-    <div id="barchartContainer">
+    <div id="barchartContainer" class="container">
       <div id="countyState"><h2><center id = "stateCounty"></center></h2></div>
       <h3><center id = "heading"></center></h3>
       <!-- To display the data's date -->

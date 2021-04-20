@@ -4,6 +4,13 @@
     padding: 2em;
 }
 
+#choroplethCardCounty {
+    width: 80vw;
+    margin: 0 auto;
+    padding: 2em;
+    padding-top: 10vh;
+}
+
 .flexContainer {
     display: flex;
     margin-top: 1.5em;
