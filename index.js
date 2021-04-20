@@ -31,8 +31,10 @@ const client = new MongoClient(uri, {
   var stateDataMostRecent = {};
   var countyDataMostRecent = {};
 
-  var dateconfirm = {};
-  var datedeath = {};
+  var stateConfirmedByDate = {};
+  var stateDeathsByDate = {};
+  stateConfirmedByDate["all"] = {};
+  stateDeathsByDate["all"] = {}; //used to keep track of total confirmed and deaths by date for the main page
 
   // connect to the mongo client
   client.connect((err) => {
@@ -71,13 +73,29 @@ const client = new MongoClient(uri, {
           }
 
         }
-        if (doc.date in dateconfirm == true){
-          dateconfirm[doc.date] = dateconfirm[doc.date] + doc.confirmed;
-          datedeath[doc.date] = datedeath[doc.date] + doc.deaths;
+        if(doc.state in stateConfirmedByDate == true){
+          if(doc.date in stateConfirmedByDate[doc.state] == true){
+            stateConfirmedByDate[doc.state][doc.date] += doc.confirmed;
+            stateDeathsByDate[doc.state][doc.date] += doc.deaths;
+          }
+          else{
+            stateConfirmedByDate[doc.state][doc.date] = doc.confirmed;
+            stateDeathsByDate[doc.state][doc.date] = doc.deahts;
+          }
         }
         else{
-          dateconfirm[doc.date] = doc.confirmed;
-          datedeath[doc.date] = doc.deaths;
+          stateConfirmedByDate[doc.state] = {};
+          stateDeathsByDate[doc.state] = {};
+          stateConfirmedByDate[doc.state][doc.date] = doc.confirmed;
+          stateDeathsByDate[doc.state][doc.date] = doc.deaths;
+        }
+        if(doc.date in stateConfirmedByDate["all"] == true){
+          stateConfirmedByDate["all"][doc.date]+= doc.confirmed;
+          stateDeathsByDate["all"][doc.date] += doc.deaths;
+        }
+        else{
+          stateConfirmedByDate["all"][doc.date] = doc.confirmed;
+          stateDeathsByDate["all"][doc.date] = doc.deaths;
         }
 
     }, () => {
@@ -119,7 +137,7 @@ app.use('/barchart', (req, res) => {
 });
 
 app.use('/line', (req, res) => {
-  res.render('line', { data: {itemsc: dateconfirm, itemsd: datedeath} });
+  res.render('line', { data: {itemsc: stateConfirmedByDate["all"], itemsd: stateDeathsByDate["all"]} });
 });
 
 //simple c3 graph with hardcoded data from the items array
@@ -142,8 +160,8 @@ app.use('/state', (req, res) => {
                             stateConfirmed:state.confirmed,
                             statePopulation:state.population,
                             stateDeaths: state.deaths,
-                            data: {itemsc: dateconfirm,
-                                    itemsd: datedeath}});
+                            data: {itemsc: stateConfirmedByDate[name],
+                                    itemsd: stateDeathsByDate[name]}});
 })
 
 // home page
@@ -151,8 +169,8 @@ app.use('/', (req, res) => {
 
 
   res.render('usViz', { states: stateDataMostRecent,
-                        data: {itemsc: dateconfirm,
-                                itemsd: datedeath}});
+                        data: {itemsc: stateConfirmedByDate["all"],
+                                itemsd: stateDeathsByDate["all"]}});
 })
 
 // listen for requests
