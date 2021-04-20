@@ -2,12 +2,11 @@
     margin:  0;
     padding: 0;
 }
-body, html {
-    margin: 0 !important;
-    padding: 0 !important;
-}
 
-nav {
+
+#navbar {
+    z-index: 1;
+    position: fixed;
     background-color: #333;
     margin: 0px !important;
     width: 100vw;
@@ -17,17 +16,26 @@ nav ul {
     list-style-type: none;
 }
 
-nav ul li {
+nav ul li{
+    display: inline-block;
+}
+
+nav ul li a{
+    display: inline-block;
+    margin: 0.8em 8px 0 0;
+}
+
+#navbar ul li a{
     display: inline-block;
     padding: 15px 10px;
     margin: 0 8px;
 }
 
-nav ul li:hover {
+#navbar ul li a:hover {
     background-color: #111;
 }
 
-nav ul li a {
+#navbar ul a {
     color: white;
     text-decoration: none;
 }

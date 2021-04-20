@@ -132,7 +132,7 @@ confirmedGradient.attr('x1', '0%')
 confirmedGradient.append('stop')
               .attr('id', 'minValue')
               .attr('offset', '0%')
-              .attr('stop-color', 'whitesmoke');
+              .attr('stop-color', 'white');
 
 confirmedGradient.append('stop')
               .attr('id', 'maxValue')
