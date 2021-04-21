@@ -80,7 +80,7 @@ const client = new MongoClient(uri, {
           }
           else{
             stateConfirmedByDate[doc.state][doc.date] = doc.confirmed;
-            stateDeathsByDate[doc.state][doc.date] = doc.deahts;
+            stateDeathsByDate[doc.state][doc.date] = doc.deaths;
           }
         }
         else{
