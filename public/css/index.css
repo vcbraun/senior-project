@@ -31,7 +31,6 @@ html, body {
 }
 
 #linegraphContainer {
-    background-color: rgb(167, 178, 190);
     padding: 5vh;
 }
 
@@ -39,8 +38,9 @@ html, body {
     background-color: white;
 }
 
-#bargraphContainer
+#barchartContainer
 {
+    width: 100vw;
     background-color: aliceblue;
 }
 
