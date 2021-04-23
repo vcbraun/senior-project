@@ -16,7 +16,8 @@
   <!-- To display the data's date -->
   <div id="one"><h3><center id ="b1"></center></h3></div>
   <h4><center>Death Percent = Number of Deaths/ Number of Cases, Cases Percent = Number of Cases/ Population</center></h4>
-  <div class="allforms">
+  <div id="parentbuttons">
+  <div id= "formbuttons" class="allforms">
   <form>
       <h4>Show:</h4>
 
@@ -44,6 +45,10 @@
       </label>
   </form>
   </div>
+  <div class = "toptenbtn">
+    <input id = "topten" type="button" value="View Highest Ten By Value" onclick="highestten()">
+  </div>
+</div>
   <!-- Create a div where the graph will be -->
   <div id="chart"></div>
 </div>

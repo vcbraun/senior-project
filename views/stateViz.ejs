@@ -74,7 +74,7 @@
 
         <!-- Graph Div -->
         <div id="my_dataviz"></div>
-        
+
     </div>
 
     <!-- Bar Chart -->
@@ -112,6 +112,9 @@
           </label>
       </form>
       </div>
+      <div class = "toptenbtn">
+        <input id = "topten" type="button" value="View Highest Ten By Value" onclick="highestten()">
+      </div>
       <!-- Create a div where the graph will be -->
       <div id="chart"></div>
     </div>
@@ -128,7 +131,7 @@
     var stateConf = <%- JSON.stringify(stateConfirmed); %>
     var statePop = <%- JSON.stringify(statePopulation); %>
     var stateDeaths = <%- JSON.stringify(stateDeaths); %>
-    
+
     // Line Graph
     var dataconfirm = <%- JSON.stringify(data.itemsc); %>;
     var datadeath = <%- JSON.stringify(data.itemsd); %>;
