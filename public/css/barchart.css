@@ -1,36 +1,14 @@
-.smallbtn {
-  margin-top: 0px;
-  margin-right: 5px;
-  line-height: 15px;
-  display: inline-block;
-  padding: 5px 5px;
-  background-color: #4d9987;
-  cursor: pointer;
-  font-style: italic;
-  text-align: center;
-  text-decoration: none;
-  outline: none;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0 9px #2b554b;
-}
-.smallbtn:hover {background-color: #66b2a0}
-
-.smallbtn:active {
-  color:#1a332d;
-}
 #myTooltip {
  position: absolute;
  text-align: left;
- width: 80px;
+ width: 100px;
  height: auto;
  min-height: 20px;
  padding: 2px;
- font: 12px sans-serif;
+ font: 15px sans-serif;
  background-color: rgb(255, 255, 255);
  border: 2px solid rgb(100, 161, 209);
- color: #5E99BD;
+ color: #0000b3;
  border-radius: 8px 8px 8px 8px;
  pointer-events: none;
  padding: 11px;
@@ -42,7 +20,7 @@
  font-size: 18px;
  width: 100%;
  line-height: 1;
- color: rgb(100, 161, 209);
+ color: #0000b3;
  content: "\25BC";
  position: absolute;
  text-align: center;
@@ -65,13 +43,13 @@ div.allforms{
   margin: 0 auto;
 }
 
-#topten{
+.topten{
   margin-top: 0px;
   margin-right: 5px;
   line-height: 15px;
   display: inline-block;
   padding: 5px 5px;
-  background-color: #4d9987;
+  background-color: #6666ff;
   cursor: pointer;
   font-style: italic;
   text-align: center;
@@ -80,5 +58,26 @@ div.allforms{
   color: #fff;
   border: none;
   border-radius: 10px;
-  box-shadow: 0 9px #2b554b;
+  box-shadow: 0 9px #3333ff;
 }
+
+.orderedbtn{
+  margin-top: 0px;
+  margin-right: 5px;
+  line-height: 15px;
+  display: inline-block;
+  padding: 5px 5px;
+  background-color: #4d4dff;
+  cursor: pointer;
+  font-style: italic;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 9px #00008b;
+}
+.topten:hover{background-color: #9999ff}
+
+.orderedbtn:hover {background-color: #8080ff}

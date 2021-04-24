@@ -13,6 +13,10 @@
     <!-- topojson support -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js" integrity="sha512-4UKI/XKm3xrvJ6pZS5oTRvIQGIzZFoXR71rRBb1y2N+PbwAsKa5tPl2J6WvbEvwN3TxQCm8hMzsl/pO+82iRlg==" crossorigin="anonymous"></script>
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif&family=Oswald:wght@500&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" type="text/css" href="/css/index.css" />
     <link rel="stylesheet" type="text/css" href="/css/choropleth.css" />
     <link rel="stylesheet" type="text/css" href="/css/line.css" />
@@ -79,46 +83,56 @@
 
     <!-- Bar Chart -->
     <div id="barchartContainer" class="container">
-      <div id="countyState"><h2><center id = "stateCounty"></center></h2></div>
-      <h3><center id = "heading"></center></h3>
-      <!-- To display the data's date -->
-      <div id="one"><h3><center id ="b1"></center></h3></div>
-      <h4><center>Death Percent = Number of Deaths/ Number of Cases, Cases Percent = Number of Cases/ Population</center></h4>
-      <div class="allforms">
-      <form>
-          <h4>Show:</h4>
+        <div class="card">
+          <div id="countyState"><h2 id = "stateCounty"></h2></div>
+          <h3 id = "heading"></h3>
+            <!-- To display the data's date -->
+            <div id="one"><h3 id ="b1"></h3></div>
+            <hr>
+            <p style = "font-size: 0.9em"><b><i>You can switch between Absolute Values and Percentages for either Number of Cases (Cases) or Number of Deaths (Deaths).<br>
+               After that, you can sort the bars by using the buttons below. (Tip: Use the Highest Ten button when there are too many counties!)<br>
+               Hover over the bars to see the specific data for the bar!<br>
+            </b></i></p>
+            <br>
+            <p style = "font-size: 0.88em"><i>(Death Percent = Number of Deaths/ Population <br>
+                Cases Percent = Number of Cases/ Population)</i></p>
+            <div class="allforms">
+            <form>
+                <h4>Show:</h4>
 
-          <label>
-              Absolute
-          <input type="radio" value="absolute" name="bar" onclick="percentAb(this.value)" checked>
-          </label>
+                <label>
+                    Absolute
+                <input type="radio" value="absolute" name="bar" onclick="percentAb(this.value)" checked>
+                </label>
 
-          <label>
-              Percent
-          <input type="radio" value="percent" name="bar" onclick="percentAb(this.value)">
-          </label>
-      </form>
-      <form>
-          <h4>Show:</h4>
+                <label>
+                    Percent
+                <input type="radio" value="percent" name="bar" onclick="percentAb(this.value)">
+                </label>
+            </form>
+            <form>
+                <h4>Show:</h4>
 
-          <label>
-              Cases
-          <input type="radio" value="Cases" name="bardisplay" onclick="formdisplay(this.value)" checked>
-          </label>
+                <label>
+                    Cases
+                <input type="radio" value="Cases" name="bardisplay" onclick="formdisplay(this.value)" checked>
+                </label>
 
-          <label>
-              Deaths
-          <input type="radio" value="Deaths" name="bardisplay" onclick="formdisplay(this.value)">
-          </label>
-      </form>
-      </div>
-      <div class = "toptenbtn">
-        <input id = "topten" type="button" value="View Highest Ten By Value" onclick="highestten()">
-      </div>
-      <!-- Create a div where the graph will be -->
-      <div id="chart"></div>
-    </div>
-
+                <label>
+                    Deaths
+                <input type="radio" value="Deaths" name="bardisplay" onclick="formdisplay(this.value)">
+                </label>
+            </form>
+            </div>
+            <div>
+              <input class = "topten" type="button" value="View Highest Ten By Value" onclick="highestten()">
+              <input class = "orderedbtn" type="button" value="Ascending Order: By County" onclick="ascendingC()">
+              <input class = "orderedbtn" type="button" value="Descending Order: By Value" onclick="descendingV()">
+            </div>
+        </div>
+            <!-- Create a div where the graph will be -->
+        <div id="chart"></div>
+        </div>
 </body>
 
 

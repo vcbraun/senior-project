@@ -108,8 +108,14 @@
             <h2 id = "heading"></h2>
             <!-- To display the data's date -->
             <div id="one"><h3 id ="b1"></h3></div>
-            <h4>Death Percent = Number of Deaths/ Number of Cases <br>
-                Cases Percent = Number of Cases/ Population</h4>
+            <hr>
+            <p style = "font-size: 0.9em"><i><b>You can switch between Absolute Values and Percentages for either Number of Cases (Cases) or Number of Deaths (Deaths).<br>
+               After that, you can sort the bars by using the buttons below.<br>
+               Hover over the bars to see the specific data for the bar!<br>
+            </b></i></p>
+            <br>
+            <p style = "font-size: 0.88em"><i>(Death Percent = Number of Deaths/ Population <br>
+                Cases Percent = Number of Cases/ Population)</i></p>
             <div class="allforms">
             <form>
                 <h4>Show:</h4>
@@ -138,10 +144,12 @@
                 </label>
             </form>
             </div>
-            <div class = "toptenbtn">
-              <input id = "topten" type="button" value="View Highest Ten By Value" onclick="highestten()">
+            <div>
+              <input class = "topten" type="button" value="View Highest Ten By Value" onclick="highestten()">
+              <input class = "orderedbtn"  type="button" value="Ascending Order: By State" onclick="ascendingS()">
+              <input class = "orderedbtn"  type="button" value="Descending Order: By Value" onclick="descendingV()">
             </div>
-        </div>
+          </div>
             <!-- Create a div where the graph will be -->
             <div id="chart"></div>
         </div>

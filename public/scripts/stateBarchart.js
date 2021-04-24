@@ -36,6 +36,7 @@ for (var key in countyCovidData) {
       }
   }
 }
+date = date.substring(0,10)
 window.onload = function(){
   document.getElementById('b1').innerHTML = date;
   };
@@ -48,22 +49,6 @@ var s2 = JSON.parse(JSON.stringify(deathData));
 var s3 = JSON.parse(JSON.stringify(percentCon));
 var s4 = JSON.parse(JSON.stringify(percentDeath));
 
-var descendingS = document.createElement("button");
-var descendingV = document.createElement("button");
-
-descendingS.setAttribute("class","smallbtn");
-descendingV.setAttribute("class","smallbtn");
-
-descendingS.innerHTML = "Descending Order: By County";
-descendingV.innerHTML = "Descending Order: By Value";
-
-
-// 2. Append to Container
-var graphDiv = document.getElementById("barchartContainer")
-graphDiv.appendChild(descendingS);
-graphDiv.appendChild(descendingV);
-
-// 3. Add event handlers
 function percentAb(val){
   perabs = val;
   if(val == "absolute"){
@@ -120,7 +105,7 @@ function sortandupdatebyValue(dat){
     barupdate(dat);
   }
 }
-descendingS.addEventListener ("click", function() {
+function ascendingC() {
   if(d == "confirmedData"){
     if(perabs == "absolute"){
       sortandupdatebyCounty(s1);
@@ -137,9 +122,9 @@ descendingS.addEventListener ("click", function() {
       sortandupdatebyCounty(s4);
     }
   }
-});
+}
 
-descendingV.addEventListener ("click", function() {
+function descendingV(){
   if(d == "confirmedData"){
     if(perabs == "absolute"){
       sortandupdatebyValue(s1);
@@ -156,7 +141,7 @@ descendingV.addEventListener ("click", function() {
       sortandupdatebyValue(s4);
     }
   }
-});
+}
 
 var highestArr = [];
 function highestten(){
@@ -257,6 +242,13 @@ function barupdate(data) {
     .attr("transform", "translate(-10,0)rotate(-35)")
     .style("text-anchor", "end");
 
+    barsvg.append("text")
+        .attr("transform",
+              "translate(" + (width/2) + " ," +
+                             (height + margin.top + 40) + ")")
+        .style("text-anchor", "middle")
+        .text("County");
+
   // Update the Y axis
   bary.domain([0, d3.max(data, function(d) { return d.Value }) ]);
   baryAxis.transition().duration(1000).call(d3.axisLeft(bary));
@@ -298,6 +290,7 @@ function onMouseOut(d){
       .style("opacity", 1)
 }
 
+  if(d == "confirmedData"){
   baru
     .enter()
     .append("rect") // Add a new rect for each new elements
@@ -310,8 +303,23 @@ function onMouseOut(d){
       .attr("y", function(d) { return bary(d.Value); })
       .attr("width", barx.bandwidth())
       .attr("height", function(d) { return height - bary(d.Value); })
-      .attr("fill", "#69b3a2")
-
+      .attr("fill", "#4d4dff")
+    }
+  else{
+    baru
+      .enter()
+      .append("rect") // Add a new rect for each new elements
+      .on("mouseover", onMouseOver)
+      .on("mouseout", onMouseOut)
+      .merge(baru) // get the already existing elements as well
+      .transition() // and apply changes to all of them
+      .duration(1000)
+        .attr("x", function(d) { return barx(d.County); })
+        .attr("y", function(d) { return bary(d.Value); })
+        .attr("width", barx.bandwidth())
+        .attr("height", function(d) { return height - bary(d.Value); })
+        .attr("fill", "#00008b")
+  }
   // If less State in the new dataset, I delete the ones not in use anymore
   baru
     .exit()
