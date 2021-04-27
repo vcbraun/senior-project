@@ -146,7 +146,7 @@ svg.append("g")
         .x(function(d) { return x(d.x); })
     .y(function(d) { return y(d.y); }))
           .attr("fill", "none")
-          .attr("stroke", "steelblue")
+          .attr("stroke", "#264653")
           .attr("stroke-width", 2.5)
 
           // Add the brushing

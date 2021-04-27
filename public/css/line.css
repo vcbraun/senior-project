@@ -5,7 +5,7 @@ button {
   font-weight: bold;
   display: inline-block;
   padding: 10px 15px;
-  background-color: #8888F9;
+  background-color: #264653;
   cursor: pointer;
   text-align: center;
   text-decoration: none;
@@ -15,10 +15,10 @@ button {
   border-radius: 15px;
   box-shadow: 0 9px #999;
 }
-button:hover {background-color: #7171FB}
+button:hover {background-color: #162f38}
 
 button:active {
-  background-color: #7171FB;
+  background-color: #162f38;
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }

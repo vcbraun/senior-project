@@ -296,7 +296,7 @@ function onMouseOut(d){
         .attr("y", function(d) { return bary(d.Value); })
         .attr("width", barx.bandwidth())
         .attr("height", function(d) { return height - bary(d.Value); })
-        .attr("fill", "#4d4dff")
+        .attr("fill", "rgb(138, 29, 74)")
   }
   else{
     baru
@@ -311,7 +311,7 @@ function onMouseOut(d){
         .attr("y", function(d) { return bary(d.Value); })
         .attr("width", barx.bandwidth())
         .attr("height", function(d) { return height - bary(d.Value); })
-        .attr("fill", "#00008b")
+        .attr("fill", "rgb(138, 29, 74)")
   }
 
   // If less State in the new dataset, I delete the ones not in use anymore

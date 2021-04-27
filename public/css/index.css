@@ -16,7 +16,7 @@ html, body {
 }
 
 #titleCard {
-    background-color: aliceblue;
+    background-color: rgba(255, 255, 255,0.8);
 }
 
 #jumbotron {
@@ -27,7 +27,7 @@ html, body {
 }
 
 #choroplethContainer {
-    background-color: aliceblue;
+    background-color: #eee;
 }
 
 .sectionHeading {
@@ -47,7 +47,7 @@ html, body {
 #barchartContainer
 {
     width: 100vw;
-    background-color: aliceblue;
+    background-color: #eee;
     overflow: hidden;
 }
 
