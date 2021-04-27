@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>CoViz</title>
 
     <!-- d3.js libraries -->
@@ -35,9 +37,9 @@
             <p>Click any of the options below to start exploring the dataset</p>
             <nav>
                 <ul>
-                    <li><a href="#choroplethContainer">Map</a></li>
-                    <li><a href="#linegraphContainer">Timeline</a></li>
-                    <li><a href="#barchartContainer">Bar Chart</a></li>
+                    <li><a href="#choroplethHeading">Map</a></li>
+                    <li><a href="#linegraphHeading">Timeline</a></li>
+                    <li><a href="#heading">Bar Chart</a></li>
                 </ul>
             </nav>
         </div>
@@ -46,7 +48,7 @@
     <!-- Choropleth -->
     <div id="choroplethContainer" class="container">
         <div id="choroplethCard">
-            <h1>Choropleth Map of the US</h1>
+            <h1 id="choroplethHeading">Choropleth Map of the US</h1>
             <p>Hover over the different states to get an overview of the statistics for that state, or click to see more.<br>
             <div class='flexContainer'>
                 <div id='tooltip' class='flexChild'>
@@ -95,7 +97,7 @@
     <!-- Line Graph -->
     <div id="linegraphContainer" class="container">
         <div id="linegraphCard" class="card">
-            <h1>COVID Data Over Time</h1>
+            <h1 id="linegraphHeading">COVID Data Over Time</h1>
             <!-- Graph Div -->
             <div id="my_dataviz"></div>
 

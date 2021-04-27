@@ -143,9 +143,9 @@ function recolorMap(stat)
                 percentage = countyCovidData[id].deaths / 
                                 countyCovidData[id].population;
                 
-                document.getElementById("statsHeader").style.backgroundColor = "rgb(48, 72, 150)";
-                d3.select('#maxValue').attr('stop-color', 'rgb(48, 72, 150)');
-                return "rgba(48, 72, 150, " + percentage / maxDeathsPercent + ")";
+                document.getElementById("statsHeader").style.backgroundColor = "rgb(74, 145, 158)";
+                d3.select('#maxValue').attr('stop-color', 'rgb(74, 145, 158)');
+                return "rgba(74, 145, 158, " + percentage / maxDeathsPercent + ")";
             } else {
                 percentage = countyCovidData[id].confirmed / 
                                 countyCovidData[id].population;
