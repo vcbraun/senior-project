@@ -30,6 +30,15 @@ html, body {
     background-color: aliceblue;
 }
 
+#choroplethHeading {
+    border-bottom: 1px solid black;
+    margin-bottom: 0.3em;
+}
+
+#choroplethContainer label{
+    margin: 0 0.7em;
+}
+
 #linegraphContainer {
     padding: 5vh;
 }
@@ -42,6 +51,7 @@ html, body {
 {
     width: 100vw;
     background-color: aliceblue;
+    overflow: hidden;
 }
 
 #tagline {

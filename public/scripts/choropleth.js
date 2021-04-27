@@ -237,9 +237,9 @@ function recolorMap(stat)
                         percentage = stateCovidData[stateFips[id]].deaths / 
                                         stateCovidData[stateFips[id]].population;
                         
-                        document.getElementById("statsHeader").style.backgroundColor = "rgb(74, 145, 158)";
-                        d3.select('#maxValue').attr('stop-color', 'rgb(74, 145, 158)');
-                        return "rgba(74, 145, 158, " + percentage/maxDeathsPercent + ")";
+                        document.getElementById("statsHeader").style.backgroundColor = "rgb(54, 125, 138)";
+                        d3.select('#maxValue').attr('stop-color', 'rgb(54, 125, 138)');
+                        return "rgba(54, 125, 138, " + percentage/maxDeathsPercent + ")";
                     }
                     else
                     {
