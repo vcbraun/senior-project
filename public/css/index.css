@@ -30,7 +30,7 @@ html, body {
     background-color: aliceblue;
 }
 
-#choroplethHeading {
+.sectionHeading {
     border-bottom: 1px solid black;
     margin-bottom: 0.3em;
 }
@@ -39,12 +39,9 @@ html, body {
     margin: 0 0.7em;
 }
 
-#linegraphContainer {
-
-}
-
-#my_dataviz {
-    background-color: white;
+#linegraphCard {
+    width: 1200px;
+    margin: auto auto;
 }
 
 #barchartContainer

@@ -10,7 +10,7 @@ confirmbutton.innerHTML = "Confirmed Cases";
 deathbutton.innerHTML = "Number of Deaths";
 
 // 2. Append to Container
-var graphContainer = document.getElementById("linegraphContainer")
+var graphContainer = document.getElementById("linegraphCard")
 graphContainer.appendChild(confirmbutton);
 graphContainer.appendChild(deathbutton);
 
