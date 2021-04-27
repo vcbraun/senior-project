@@ -21,7 +21,7 @@ html, body {
 
 #jumbotron {
     height: 40vh;
-    background-color: rgb(167, 178, 190);
+    background-color: #264653;
     padding: 30vh 0;
     text-align: center;
 }

@@ -7,7 +7,7 @@
 #navbar {
     z-index: 1;
     position: fixed;
-    background-color: #333;
+    background-color: rgb(0, 0, 0, 0.8);
     margin: 0px !important;
     width: 100vw;
 }
